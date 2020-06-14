@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" th:replace="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>图书搜索</title>
+</head>
+<body>
+<div th:fragment="content">
+    <section class="white-wrapper special-max-width allow-overflow">
+        <div class="section-inner drag-me-up nopaddingbottom">
+            <div class="container">
+                <div class="row mb60 text-center">
+                    <div class="col-sm-6 text-left match-height">
+                        <h3 class="section-title">图书查找，</h3>
+                        <p class="section-sub-title">按书名查找您喜爱的图书。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="row">
+                                    <div class="text-center">
+                                        <div class="col-sm-10">
+                                            <input id="keyword" class="form-control mb30" name="keyword"
+                                                   placeholder="请输入您想查找的书名" type="text" required/>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button class="btn btn-primary mt30" onclick="searchBooks()">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-search"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="searchContent">
+        <div class="container section-inner nopaddingbottom">
+            <header class="backstretched fullheight single-page-hero" id="home">
+                <div class="dark-overlay dark-overlay-remove-color fullheight single-page-hero">
+                    <div class="container-fluid fullheight single-page-hero special-max-width">
+                        <div class="vertical-center-js">
+                            <div class="row">
+                                <div class="col-sm-1 hidden-xs backstrech-controls vertical-center-js">
+                                    <div>
+                                        <a class="pull-left" href="#prev-slide"><i
+                                                class="fa fa-2x fa-long-arrow-left"></i></a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-10 col-xs-12 text-center jumbo vertical-center-js">
+                                    <img alt="Image" src="images/logo/logo-light.png"
+                                         style="max-height: 75%; max-width: 75%;"/>
+                                </div>
+                                <div class="col-sm-1 hidden-xs backstrech-controls vertical-center-js">
+                                    <div>
+                                        <a class="pull-right" href="#next-slide"><i
+                                                class="fa fa-2x fa-long-arrow-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+    </div>
+    <br>
+    <script type="text/javascript">
+        function searchBooks() {
+            const keyword = $("#keyword").val().trim();
+            if (keyword.length !== 0) {
+                let xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        document.getElementById("searchContent").innerHTML = xmlhttp.responseText;
+                    }
+                }
+                xmlhttp.open("GET", "/api/search?keyword=" + keyword, true);
+                xmlhttp.send();
+            }
+        }
+    </script>
+</div>
+</body>
+</html>

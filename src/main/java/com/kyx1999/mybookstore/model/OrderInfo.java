@@ -9,7 +9,7 @@ public class OrderInfo {
 
     private String status;
 
-    private Date date;
+    private Date time;
 
     public Integer getOid() {
         return oid;
@@ -35,11 +35,11 @@ public class OrderInfo {
         this.status = status == null ? null : status.trim();
     }
 
-    public Date getDate() {
-        return date;
+    public Date getTime() {
+        return time;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTime(Date time) {
+        this.time = time;
     }
 }

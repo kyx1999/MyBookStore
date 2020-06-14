@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" th:replace="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>首页</title>
+</head>
+<body>
+<div th:fragment="content">
+    <div class="container section-inner nopaddingbottom">
+        <header class="backstretched fullheight single-page-hero" id="home">
+            <div class="dark-overlay dark-overlay-remove-color fullheight single-page-hero">
+                <div class="container-fluid fullheight single-page-hero special-max-width">
+                    <div class="vertical-center-js">
+                        <div class="row">
+                            <div class="col-sm-1 hidden-xs backstrech-controls vertical-center-js">
+                                <div>
+                                    <a class="pull-left" href="#prev-slide"><i class="fa fa-2x fa-long-arrow-left"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-sm-10 col-xs-12 text-center jumbo vertical-center-js">
+                                <img alt="Image" src="images/logo/logo-light.png" style="max-height: 75%; max-width: 75%;"/>
+                            </div>
+                            <div class="col-sm-1 hidden-xs backstrech-controls vertical-center-js">
+                                <div>
+                                    <a class="pull-right" href="#next-slide"><i
+                                            class="fa fa-2x fa-long-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+    <!--/*@thymesVar id="top1" type="com.kyx1999.mybookstore.model.Book"*/-->
+    <section id="our-team" class="white-wrapper special-max-width" th:if="${top1} != null">
+        <div class="section-inner">
+            <div class="container">
+                <div class="row mb60">
+                    <div class="col-sm-12">
+                        <h3 class="section-title">本周热卖，</h3>
+                        <p class="section-sub-title">永远是您的第一选择。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row nopaddingleftright">
+                <div class="team-item col-md-3 match-height">
+                    <div class="hover-effect smoothie match-height">
+                        <a href="#" class="smoothie">
+                            <img alt="Image" class="img-responsive smoothie" src=""
+                                 th:src="'images/books/' + ${top1.getBid()} + '.jpg'"></a>
+                        <div class="hover-overlay smoothie text-center">
+                            <div class="vertical-align-top">
+                                <h4 th:text="'《' + ${top1.getBname()} + '》'"></h4>
+                                <span class="hover-overlay-cat" th:text="'作者：' + ${top1.getAuthor()}"></span>
+                            </div>
+                        </div>
+                        <div class="hover-caption dark-overlay smoothie text-center">
+                            <div class="vertical-align-bottom">
+                                <a th:href="'book?bid=' + ${top1.getBid()}" class="btn btn-primary btn-green">了解更多</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/*@thymesVar id="top2" type="com.kyx1999.mybookstore.model.Book"*/-->
+                <div class="team-item col-md-3 match-height" th:if="${top2} != null">
+                    <div class="hover-effect smoothie match-height">
+                        <a href="#" class="smoothie">
+                            <img alt="Image" class="img-responsive smoothie" src=""
+                                 th:src="'images/books/' + ${top2.getBid()} + '.jpg'"></a>
+                        <div class="hover-overlay smoothie text-center">
+                            <div class="vertical-align-top">
+                                <h4 th:text="'《' + ${top2.getBname()} + '》'"></h4>
+                                <span class="hover-overlay-cat" th:text="'作者：' + ${top2.getAuthor()}"></span>
+                            </div>
+                        </div>
+                        <div class="hover-caption dark-overlay smoothie text-center">
+                            <div class="vertical-align-bottom">
+                                <a th:href="'book?bid=' + ${top2.getBid()}" class="btn btn-primary btn-green">了解更多</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/*@thymesVar id="top3" type="com.kyx1999.mybookstore.model.Book"*/-->
+                <div class="team-item col-md-3 match-height" th:if="${top3} != null">
+                    <div class="hover-effect smoothie match-height">
+                        <a href="#" class="smoothie">
+                            <img alt="Image" class="img-responsive smoothie" src=""
+                                 th:src="'images/books/' + ${top3.getBid()} + '.jpg'"></a>
+                        <div class="hover-overlay smoothie text-center">
+                            <div class="vertical-align-top">
+                                <h4 th:text="'《' + ${top3.getBname()} + '》'"></h4>
+                                <span class="hover-overlay-cat" th:text="'作者：' + ${top3.getAuthor()}"></span>
+                            </div>
+                        </div>
+                        <div class="hover-caption dark-overlay smoothie text-center">
+                            <div class="vertical-align-bottom">
+                                <a th:href="'book?bid=' + ${top3.getBid()}" class="btn btn-primary btn-green">了解更多</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/*@thymesVar id="top4" type="com.kyx1999.mybookstore.model.Book"*/-->
+                <div class="team-item col-md-3 match-height" th:if="${top4} != null">
+                    <div class="hover-effect smoothie match-height">
+                        <a href="#" class="smoothie">
+                            <img alt="Image" class="img-responsive smoothie" src=""
+                                 th:src="'images/books/' + ${top4.getBid()} + '.jpg'"></a>
+                        <div class="hover-overlay smoothie text-center">
+                            <div class="vertical-align-top">
+                                <h4 th:text="'《' + ${top4.getBname()} + '》'"></h4>
+                                <span class="hover-overlay-cat" th:text="'作者：' + ${top4.getAuthor()}"></span>
+                            </div>
+                        </div>
+                        <div class="hover-caption dark-overlay smoothie text-center">
+                            <div class="vertical-align-bottom">
+                                <a th:href="'book?bid=' + ${top4.getBid()}" class="btn btn-primary btn-green">了解更多</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <br th:if="${top1} == null">
+</div>
+</body>
+</html>

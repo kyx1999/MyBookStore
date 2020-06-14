@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" th:replace="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>账户信息</title>
+</head>
+<body>
+<div th:fragment="content">
+    <section class="white-wrapper special-max-width allow-overflow">
+        <div class="section-inner drag-me-up">
+            <!--/*@thymesVar id="user" type="com.kyx1999.mybookstore.model.User"*/-->
+            <div class="container">
+                <div class="row mb60">
+                    <div class="col-sm-12">
+                        <h3 class="section-title" th:if="${user} != null" th:text="${user.getUname()} + '，'"></h3>
+                        <h3 class="section-title" th:if="${user} == null">您好，</h3>
+                        <p class="section-sub-title">欢迎回来。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row mb90">
+                    <div class="col-sm-3">
+                        <p>查看本店<a href="coming-soon">相关服务条款</a>（然而其实并没有→_→）。</p>
+                    </div>
+                    <div class="col-sm-8 col-sm-offset-1">
+                        <div class="row">
+                            <div class="col-sm-12" id="message"></div>
+                            <div class="col-sm-12">
+                                <form action="api/profile" class="main-contact-form" method="post" target="action"
+                                      th:if="${user} != null">
+                                    <div class="form-group">
+                                        <input class="form-control col-md-4 mb20" name="uname" placeholder="您的用户名*"
+                                               type="text" th:value="${user.getUname()}"/>
+                                        <input class="form-control col-md-4 mb20" name="pwd" placeholder="您的新密码*"
+                                               type="password" th:value="${user.getPwd()}"/>
+                                        <input class="form-control col-md-4 mb20" name="pwdAgain" placeholder="确认您的新密码*"
+                                               type="password" th:value="${user.getPwd()}"/>
+                                        <select class="form-control col-md-4 mb20" name="sex">
+                                            <option>您的性别*</option>
+                                            <option selected value="男" th:if="${user.getSex().equals('男')}">男</option>
+                                            <option value="男" th:if="${user.getSex().equals('女')}">男</option>
+                                            <option selected value="女" th:if="${user.getSex().equals('女')}">女</option>
+                                            <option value="女" th:if="${user.getSex().equals('男')}">女</option>
+                                        </select>
+                                        <input class="form-control col-md-4 mb20" name="email" placeholder="您的电子邮箱*"
+                                               type="email" th:value="${user.getEmail()}"/>
+                                        <input class="form-control col-md-4 mb20" name="phone" placeholder="您的电话*"
+                                               type="text" th:value="${user.getPhone()}"/>
+                                        <input class="form-control col-md-4 mb20" name="address" placeholder="您的收货地址*"
+                                               type="text" th:value="${user.getAddress()}"/>
+                                        <input class="form-control col-md-4 mb20" name="oldPwd" placeholder="您的原密码*"
+                                               type="password" required data-validation-required-message="请输入您的原密码。"/>
+                                    </div>
+                                    <input class="btn btn-primary mt30 pull-right" type="submit" value="修改"/>
+                                </form>
+                                <iframe name="action" style="display: none;"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

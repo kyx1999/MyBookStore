@@ -9,7 +9,7 @@ public class Comment {
 
     private String content;
 
-    private Date date;
+    private Date time;
 
     public Integer getUid() {
         return uid;
@@ -35,11 +35,11 @@ public class Comment {
         this.content = content == null ? null : content.trim();
     }
 
-    public Date getDate() {
-        return date;
+    public Date getTime() {
+        return time;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTime(Date time) {
+        this.time = time;
     }
 }

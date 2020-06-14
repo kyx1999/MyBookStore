@@ -5,7 +5,7 @@ import java.util.Date;
 public class Bulletin {
     private String content;
 
-    private Date date;
+    private Date time;
 
     public String getContent() {
         return content;
@@ -15,11 +15,11 @@ public class Bulletin {
         this.content = content == null ? null : content.trim();
     }
 
-    public Date getDate() {
-        return date;
+    public Date getTime() {
+        return time;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTime(Date time) {
+        this.time = time;
     }
 }

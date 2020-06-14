@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" th:replace="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>图书分类</title>
+</head>
+<body>
+<div th:fragment="content">
+    <section class="white-wrapper special-max-width allow-overflow">
+        <div class="section-inner drag-me-up nopaddingbottom">
+            <div class="container">
+                <div class="row mb60 text-center">
+                    <div class="col-sm-6 text-left match-height">
+                        <h3 class="section-title">图书分类，</h3>
+                        <p class="section-sub-title">按分类查找您喜爱的图书。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="masonry-portfolio row">
+                                    <!--/*@thymesVar id="categories" type="java.lang.String"*/-->
+                                    <ul class="col-sm-2 masonry-portfolio-filter mb40 list-inline vertical wow fadeIn text-right"
+                                        data-wow-delay="0.2s" th:utext="${categories}"></ul>
+                                    <div class="col-sm-10">
+                                        <div class="masonry-portfolio-items">
+                                            <!--/*@thymesVar id="books" type="java.lang.String"*/-->
+                                            <div class="row nopaddingleftright" th:utext="${books}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript">
+        window.onload = function () {
+            $("table tr:nth-child(even)").addClass("even");
+            if (document.getElementById("selected") != null) {
+                document.getElementById("selected").click();
+            }
+        };
+    </script>
+</div>
+</body>
+</html>

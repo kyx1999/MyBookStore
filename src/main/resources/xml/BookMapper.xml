@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kyx1999.mybookstore.dao.BookMapper">
+    <resultMap id="BaseResultMap" type="com.kyx1999.mybookstore.model.Book">
+        <id column="bid" property="bid" jdbcType="INTEGER"/>
+        <result column="bname" property="bname" jdbcType="VARCHAR"/>
+        <result column="author" property="author" jdbcType="VARCHAR"/>
+        <result column="press" property="press" jdbcType="VARCHAR"/>
+        <result column="date" property="date" jdbcType="DATE"/>
+        <result column="category" property="category" jdbcType="CHAR"/>
+        <result column="descn" property="descn" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="REAL"/>
+        <result column="amount" property="amount" jdbcType="INTEGER"/>
+        <result column="sales" property="sales" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        bid, bname, author, press, date, category, descn, price, amount, sales
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from book
+        where bid = #{bid,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from book
+        where bid = #{bid,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.kyx1999.mybookstore.model.Book">
+        insert into book (bid, bname, author,
+            press, date, category, descn,
+            price, amount, sales)
+        values (#{bid,jdbcType=INTEGER}, #{bname,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR},
+            #{press,jdbcType=VARCHAR}, #{date,jdbcType=DATE}, #{category,jdbcType=CHAR}, #{descn,jdbcType=VARCHAR},
+            #{price,jdbcType=REAL}, #{amount,jdbcType=INTEGER}, #{sales,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.kyx1999.mybookstore.model.Book">
+        insert into book
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bid != null">
+                bid,
+            </if>
+            <if test="bname != null">
+                bname,
+            </if>
+            <if test="author != null">
+                author,
+            </if>
+            <if test="press != null">
+                press,
+            </if>
+            <if test="date != null">
+                date,
+            </if>
+            <if test="category != null">
+                category,
+            </if>
+            <if test="descn != null">
+                descn,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="sales != null">
+                sales,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bid != null">
+                #{bid,jdbcType=INTEGER},
+            </if>
+            <if test="bname != null">
+                #{bname,jdbcType=VARCHAR},
+            </if>
+            <if test="author != null">
+                #{author,jdbcType=VARCHAR},
+            </if>
+            <if test="press != null">
+                #{press,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null">
+                #{date,jdbcType=DATE},
+            </if>
+            <if test="category != null">
+                #{category,jdbcType=CHAR},
+            </if>
+            <if test="descn != null">
+                #{descn,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=REAL},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=INTEGER},
+            </if>
+            <if test="sales != null">
+                #{sales,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.kyx1999.mybookstore.model.Book">
+        update book
+        <set>
+            <if test="bname != null">
+                bname = #{bname,jdbcType=VARCHAR},
+            </if>
+            <if test="author != null">
+                author = #{author,jdbcType=VARCHAR},
+            </if>
+            <if test="press != null">
+                press = #{press,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null">
+                date = #{date,jdbcType=DATE},
+            </if>
+            <if test="category != null">
+                category = #{category,jdbcType=CHAR},
+            </if>
+            <if test="descn != null">
+                descn = #{descn,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=REAL},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=INTEGER},
+            </if>
+            <if test="sales != null">
+                sales = #{sales,jdbcType=INTEGER},
+            </if>
+        </set>
+        where bid = #{bid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.kyx1999.mybookstore.model.Book">
+        update book
+        set bname = #{bname,jdbcType=VARCHAR},
+            author = #{author,jdbcType=VARCHAR},
+            press = #{press,jdbcType=VARCHAR},
+            date = #{date,jdbcType=DATE},
+            category = #{category,jdbcType=CHAR},
+            descn = #{descn,jdbcType=VARCHAR},
+            price = #{price,jdbcType=REAL},
+            amount = #{amount,jdbcType=INTEGER},
+            sales = #{sales,jdbcType=INTEGER}
+        where bid = #{bid,jdbcType=INTEGER}
+    </update>
+    <select id="getTop4SalesBooksThisWeek" resultType="com.kyx1999.mybookstore.model.Book">
+        SELECT
+            `book`.`bid` `bid`,
+            `bname`,
+            `author`,
+            `press`,
+            `date`,
+            `category`,
+            `descn`,
+            `price`,
+            `amount`,
+            `sales`
+        FROM
+            `book`,
+            (SELECT
+                `A`.`bid` `bid`, SUM(`A`.`qty`) `qty`
+            FROM
+                (SELECT
+                `order_item`.`bid`, `order_item`.`qty`
+            FROM
+                `order_item`
+            WHERE
+                `order_item`.`oid` IN (SELECT
+                    `order_info`.`oid`
+                FROM
+                    `order_info`
+                WHERE
+                    `order_info`.`status` = '完成'
+                        AND DATE_SUB(NOW(), INTERVAL 7 DAY) &lt;= `order_info`.`time`)) `A`
+            GROUP BY `A`.`bid`) `B`
+        WHERE
+            `book`.`bid` = `B`.`bid`
+        ORDER BY `B`.`qty` DESC
+        LIMIT 0 , 4
+    </select>
+    <select id="getTopXSalesBooks" parameterType="java.lang.Integer" resultType="com.kyx1999.mybookstore.model.Book">
+        SELECT
+            *
+        FROM
+            `book`
+        ORDER BY `sales` DESC
+        LIMIT 0 , #{amount,jdbcType=INTEGER}
+    </select>
+    <select id="getCategories" resultType="java.lang.String">
+        SELECT DISTINCT
+            (`category`)
+        FROM
+            `book`
+        ORDER BY `category`
+    </select>
+    <select id="getAllBooks" resultType="com.kyx1999.mybookstore.model.Book">
+        SELECT
+            *
+        FROM
+            `book`
+        ORDER BY `sales` DESC
+    </select>
+    <select id="getSearchBooks" parameterType="java.lang.String" resultType="com.kyx1999.mybookstore.model.Book">
+        SELECT
+            *
+        FROM
+            `book`
+        WHERE
+            `bname` LIKE CONCAT('%', #{keyword,jdbcType=VARCHAR}, '%')
+        ORDER BY `sales` DESC
+    </select>
+</mapper>

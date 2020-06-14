@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kyx1999.mybookstore.dao.OrderInfoMapper">
+    <resultMap id="BaseResultMap" type="com.kyx1999.mybookstore.model.OrderInfo">
+        <id column="oid" property="oid" jdbcType="INTEGER"/>
+        <result column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="CHAR"/>
+        <result column="time" property="time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        oid, uid, status, time
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from order_info
+        where oid = #{oid,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from order_info
+        where oid = #{oid,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.kyx1999.mybookstore.model.OrderInfo">
+        insert into order_info (oid, uid, status,
+            time)
+        values (#{oid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{status,jdbcType=CHAR},
+            #{time,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.kyx1999.mybookstore.model.OrderInfo" useGeneratedKeys="true"
+            keyProperty="oid">
+        insert into order_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="oid != null">
+                oid,
+            </if>
+            <if test="uid != null">
+                uid,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="time != null">
+                time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="oid != null">
+                #{oid,jdbcType=INTEGER},
+            </if>
+            <if test="uid != null">
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="time != null">
+                #{time,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.kyx1999.mybookstore.model.OrderInfo">
+        update order_info
+        <set>
+            <if test="uid != null">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=CHAR},
+            </if>
+            <if test="time != null">
+                time = #{time,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where oid = #{oid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.kyx1999.mybookstore.model.OrderInfo">
+        update order_info
+        set uid = #{uid,jdbcType=INTEGER},
+            status = #{status,jdbcType=CHAR},
+            time = #{time,jdbcType=TIMESTAMP}
+        where oid = #{oid,jdbcType=INTEGER}
+    </update>
+    <select id="selectByUserId" parameterType="java.lang.Integer" resultType="com.kyx1999.mybookstore.model.OrderInfo">
+        SELECT
+            *
+        FROM
+            `order_info`
+        WHERE
+            `uid` = '1'
+        ORDER BY `time` DESC
+    </select>
+</mapper>

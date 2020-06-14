@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" th:replace="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>图书</title>
+</head>
+<body>
+<div th:fragment="content">
+    <section class="white-wrapper special-max-width allow-overflow">
+        <div class="section-inner">
+            <!--/*@thymesVar id="book" type="com.kyx1999.mybookstore.model.Book"*/-->
+            <div class="container">
+                <div class="row mb60">
+                    <div class="col-sm-12" th:if="${book} != null">
+                        <h3 class="section-title" th:text="'《' + ${book.getBname()} + '》'"></h3>
+                        <div class="item-metas text-muted mb30 white">
+                            <span class="meta-item">作者：<span class="secondary-font"
+                                                             th:text="${book.getAuthor()}"></span></span>
+                            <span class="meta-item">出版社：<span class="secondary-font"
+                                                              th:text="${book.getPress()}"></span></span>
+                            <!--/*@thymesVar id="bookDate" type="java.lang.String"*/-->
+                            <span class="meta-item">出版日期：<span class="secondary-font"
+                                                               th:text="${bookDate}"></span></span>
+                            <span class="meta-item">分类：<span class="secondary-font"
+                                                             th:text="${book.getCategory()}"></span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <section class="white-wrapper special-max-width allow-overflow">
+                            <div class="section-inner drag-me-up nopaddingbottom">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="team-item col-md-12 match-height nopaddingleftright">
+                                            <div class="hover-effect smoothie match-height">
+                                                <a class="smoothie" href="#">
+                                                    <img alt="Image" class="img-responsive smoothie" src=""
+                                                         th:if="${book} != null"
+                                                         th:src="'images/books/' + ${book.getBid()} + '.jpg'"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="row mb60">
+                                            <div class="col-sm-12" th:if="${book} != null">
+                                                <!--/*@thymesVar id="bookPrice" type="java.lang.String"*/-->
+                                                <h3 class="section-title" th:text="'售价：' + ${bookPrice}"></h3>
+                                                <p class="section-sub-title"
+                                                   th:text="'剩余库存：' + ${book.getAmount()}"></p>
+                                                <p class="section-sub-title" th:text="'总销量：' + ${book.getSales()}"></p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12" data-wow-delay="0.2s" th:if="${book} != null">
+                                                <h3 class="uppercase mb30">图书简介</h3>
+                                                <p th:text="${book.getDescn()}"></p>
+                                                <p id="bid" style="display: none;" th:text="${book.getBid()}"></p>
+                                                <br>
+                                                <p>数量：</p>
+                                                <form action="api/add2cart" class="main-contact-form col-md-12"
+                                                      method="post" target="action">
+                                                    <div class="form-group col-md-6">
+                                                        <input name="bid" type="number" required style="display: none;"
+                                                               th:value="${book.getBid()}"/>
+                                                        <input class="form-control mb20" min="1" name="qty" step="1"
+                                                               type="number" value="1" required/>
+                                                    </div>
+                                                    <input class="btn btn-primary col-md-6 mt30 pull-right"
+                                                           type="submit" value="加入购物车"/>
+                                                </form>
+                                                <iframe name="action" style="display: none;"></iframe>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <div class="mb90 clearfix"></div>
+                        <div id="comments-list" class="wow fadeIn" data-wow-delay="0.2s">
+                            <!--/*@thymesVar id="commentCount" type="java.lang.Integer"*/-->
+                            <div class="mt60 mb60 single-section-title">
+                                <h3 th:text="${commentCount} + '条评价'"></h3>
+                            </div>
+                            <p id="comment-count" style="display: none;" th:text="${commentCount}"></p>
+                            <div th:if="${commentCount} != 0">
+                                <!--/*@thymesVar id="comments" type="java.lang.String"*/-->
+                                <div id="comments" th:utext="${comments}"></div>
+                                <button class="btn btn-primary pull-right mt30" onclick="nextPage()">下一页</button>
+                                <button class="btn btn-primary pull-right mt30" onclick="lastPage()">上一页</button>
+                            </div>
+                            <div class="row wow fadeIn" id="comments-form" data-wow-delay="0.2s">
+                                <div class="col-md-12">
+                                    <div class="mt60 mb50 single-section-title">
+                                        <h3>评价该图书</h3>
+                                    </div>
+                                    <div id="message"></div>
+                                    <form action="api/submit-comment" class="comment-form" method="post" target="action"
+                                          th:if="${book} != null">
+                                        <input name="bid" type="number" required style="display: none;"
+                                               th:value="${book.getBid()}"/>
+                                        <textarea class="form-control mb40" name="content" placeholder="您的评价*" required
+                                                  data-validation-required-message="请输入您的评价。"></textarea>
+                                        <input class="btn btn-primary pull-right mt30" type="submit" value="评价"/>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-sm-offset-1 sidebar">
+                        <div class="gallery-widget widget mb40">
+                            <h4 class="widget-title mb40">热销图书</h4>
+                            <div class="widget-content">
+                                <div class="gallery-list">
+                                    <!--/*@thymesVar id="top1" type="com.kyx1999.mybookstore.model.Book"*/-->
+                                    <a class="thumb" th:if="${top1} != null" th:href="'book?bid=' + ${top1.getBid()}">
+                                        <img alt="" class="img-responsive" src=""
+                                             th:src="'images/books/' + ${top1.getBid()} + '.jpg'">
+                                    </a>
+                                    <!--/*@thymesVar id="top2" type="com.kyx1999.mybookstore.model.Book"*/-->
+                                    <a class="thumb" th:if="${top2} != null" th:href="'book?bid=' + ${top2.getBid()}">
+                                        <img alt="" class="img-responsive" src=""
+                                             th:src="'images/books/' + ${top2.getBid()} + '.jpg'">
+                                    </a>
+                                    <!--/*@thymesVar id="top3" type="com.kyx1999.mybookstore.model.Book"*/-->
+                                    <a class="thumb" th:if="${top3} != null" th:href="'book?bid=' + ${top3.getBid()}">
+                                        <img alt="" class="img-responsive" src=""
+                                             th:src="'images/books/' + ${top3.getBid()} + '.jpg'">
+                                    </a>
+                                    <!--/*@thymesVar id="top4" type="com.kyx1999.mybookstore.model.Book"*/-->
+                                    <a class="thumb" th:if="${top4} != null" th:href="'book?bid=' + ${top4.getBid()}">
+                                        <img alt="" class="img-responsive" src=""
+                                             th:src="'images/books/' + ${top4.getBid()} + '.jpg'">
+                                    </a>
+                                    <!--/*@thymesVar id="top5" type="com.kyx1999.mybookstore.model.Book"*/-->
+                                    <a class="thumb" th:if="${top5} != null" th:href="'book?bid=' + ${top5.getBid()}">
+                                        <img alt="" class="img-responsive" src=""
+                                             th:src="'images/books/' + ${top5.getBid()} + '.jpg'">
+                                    </a>
+                                    <!--/*@thymesVar id="top6" type="com.kyx1999.mybookstore.model.Book"*/-->
+                                    <a class="thumb" th:if="${top6} != null" th:href="'book?bid=' + ${top6.getBid()}">
+                                        <img alt="" class="img-responsive" src=""
+                                             th:src="'images/books/' + ${top6.getBid()} + '.jpg'">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/*@thymesVar id="categories1" type=""*/-->
+                        <div class="useful-link-widget widget mb40" th:if="${categories1} != null">
+                            <h4 class="widget-title mb40">图书分类</h4>
+                            <div class="widget-content">
+                                <div class="useful-link-list">
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-6 col-xs-6">
+                                            <ul class="list-unstyled">
+                                                <li th:each="category1 : ${categories1}">
+                                                    <i class="fa fa-angle-right"></i><a
+                                                        th:href="'category?selected=' + ${category1}"
+                                                        th:text="${category1}"></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!--/*@thymesVar id="categories2" type=""*/-->
+                                        <div class="col-md-6 col-sm-6 col-xs-6" th:if="${categories2} != null">
+                                            <ul class="list-unstyled">
+                                                <li th:each="category2 : ${categories2}">
+                                                    <i class="fa fa-angle-right"></i><a
+                                                        th:href="'category?selected=' + ${category2}"
+                                                        th:text="${category2}"></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript">
+        let page = 1;
+
+        function jumpToPage(index) {
+            let xmlhttp;
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    document.getElementById("comments").innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("GET", "/api/comment?bid=" + document.getElementById("bid").innerText + "&page=" + index, true);
+            xmlhttp.send();
+        }
+
+        function lastPage() {
+            if (page > 1) {
+                jumpToPage(--page);
+            }
+        }
+
+        function nextPage() {
+            if (document.getElementById("comment-count").innerText / 5 > page) {
+                jumpToPage(++page);
+            }
+        }
+    </script>
+</div>
+</body>
+</html>
