@@ -51,14 +51,7 @@ public class HomeController {
             }
         }
 
-        return "index";
-    }
-
-    @GetMapping("/search")
-    public String search(Model model, HttpServletRequest request) {
-        Tools.setLayout(userService, bulletinService, model, request, true);
-
-        return "search";
+        return "/index";
     }
 
     @GetMapping("/category")
@@ -96,7 +89,14 @@ public class HomeController {
             model.addAttribute("books", stringBuilder.toString());
         }
 
-        return "category";
+        return "/category";
+    }
+
+    @GetMapping("/search")
+    public String search(Model model, HttpServletRequest request) {
+        Tools.setLayout(userService, bulletinService, model, request, true);
+
+        return "/search";
     }
 
     @GetMapping("/book")
@@ -106,7 +106,7 @@ public class HomeController {
         Book book = bookService.selectByPrimaryKey(bid);
         if (book != null) {
             model.addAttribute("book", book);
-            DateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+            DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String bookDate = simpleDateFormat.format(book.getDate());
             model.addAttribute("bookDate", bookDate);
             DecimalFormat decimalFormat = new DecimalFormat(".00");
@@ -138,21 +138,21 @@ public class HomeController {
             }
         }
 
-        return "book";
+        return "/book";
     }
 
     @GetMapping("/sign-in")
     public String signIn(Model model, HttpServletRequest request) {
         Tools.setLayout(userService, bulletinService, model, request, false);
 
-        return "sign-in";
+        return "/sign-in";
     }
 
     @GetMapping("/sign-up")
     public String signUp(Model model, HttpServletRequest request) {
         Tools.setLayout(userService, bulletinService, model, request, false);
 
-        return "sign-up";
+        return "/sign-up";
     }
 
     @GetMapping("/profile")
@@ -164,7 +164,7 @@ public class HomeController {
             model.addAttribute("user", user);
         }
 
-        return "profile";
+        return "/profile";
     }
 
     @GetMapping("/cart")
@@ -176,7 +176,7 @@ public class HomeController {
             model.addAttribute("cartContent", Tools.generateCartContentByUserId(user.getUid(), bookService, cartItemService));
         }
 
-        return "cart";
+        return "/cart";
     }
 
     @GetMapping("/order")
@@ -190,7 +190,7 @@ public class HomeController {
                 Map<OrderInfo, OrderItem[]> orders = orderService.getOrdersByOrderInfos(orderInfos);
                 Float total = 0F;
                 StringBuilder orderTables = new StringBuilder();
-                DateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+                DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 DecimalFormat decimalFormat = new DecimalFormat(".00");
                 for (OrderInfo orderInfo : orderInfos) {
                     orderTables.append("<table><tbody><tr><th colspan=\"2\">订单编号：").append(orderInfo.getOid()).append("</th><th colspan=\"2\">下单时间：").append(simpleDateFormat.format(orderInfo.getTime())).append("</th><th colspan=\"1\">订单状态：").append(orderInfo.getStatus()).append("</th></tr><tr><th>序号</th><th>书名</th><th>单价</th><th>数量</th><th>小计</th></tr>");
@@ -209,20 +209,20 @@ public class HomeController {
             }
         }
 
-        return "order";
+        return "/order";
     }
 
     @GetMapping("/about")
     public String about(Model model, HttpServletRequest request) {
         Tools.setLayout(userService, bulletinService, model, request, false);
 
-        return "about";
+        return "/about";
     }
 
     @GetMapping("/coming-soon")
     public String comingSoon(Model model, HttpServletRequest request) {
         Tools.setLayout(userService, bulletinService, model, request, true);
 
-        return "coming-soon";
+        return "/coming-soon";
     }
 }

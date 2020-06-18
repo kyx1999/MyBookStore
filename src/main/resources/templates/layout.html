@@ -4,65 +4,65 @@
     <meta charset="UTF-8"/>
     <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <link rel="shortcut icon" href="images/favicon/favicon.ico" type="image/x-icon"/>
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="css/anonymous-pro.css" rel='stylesheet' type="text/css"/>
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-    <link href="pe-icons/css/pe-icon-7-stroke.css" rel="stylesheet" type="text/css"/>
-    <link href="css/animate.css" rel="stylesheet" type="text/css"/>
-    <link href="css/plugins.css" rel="stylesheet" type="text/css"/>
-    <link href="css/style.css" rel="stylesheet" type="text/css"/>
-    <script src="js/jquery.min.js" type="text/javascript"></script>
-    <script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="js/owl-carousel.js" type="text/javascript"></script>
-    <script src="js/plugins.js" type="text/javascript"></script>
-    <script src="js/init.js" type="text/javascript"></script>
+    <link rel="shortcut icon" href="/images/favicon/favicon.ico" type="image/x-icon"/>
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/anonymous-pro.css" rel='stylesheet' type="text/css"/>
+    <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/pe-icons/css/pe-icon-7-stroke.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/animate.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/plugins.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/style.css" rel="stylesheet" type="text/css"/>
+    <script src="/js/jquery.min.js" type="text/javascript"></script>
+    <script src="/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/owl-carousel.js" type="text/javascript"></script>
+    <script src="/js/plugins.js" type="text/javascript"></script>
+    <script src="/js/init.js" type="text/javascript"></script>
     <title>匡总の网上书城</title>
 </head>
 <body class="top-navigation pushy-right-side borderless">
 <nav class="pushy pushy-right">
     <ul class="list-unstyled">
         <!--/*@thymesVar id="identityType" type="java.lang.Integer"*/-->
-        <li><a class="logo" href="/"><img alt="Image" class="logo img-responsive" src="images/logo/logo.png"/></a></li>
+        <li><a class="logo" href="/"><img alt="Image" class="logo img-responsive" src="/images/logo/logo.png"/></a></li>
         <li class="pushy-submenu">
             <a class="submenu-link" href="#">查找图书 <i class="fa fa-angle-down"></i></a>
             <ul>
-                <li><a href="category?selected=全部">图书分类</a></li>
-                <li><a href="search">图书搜索</a></li>
+                <li><a href="/category?selected=全部">图书分类</a></li>
+                <li><a href="/search">图书搜索</a></li>
             </ul>
         </li>
         <li class="pushy-submenu">
             <a class="submenu-link" href="#">我的账户 <i class="fa fa-angle-down"></i></a>
             <ul th:if="${identityType} == 0">
-                <li><a href="sign-in">登录</a></li>
-                <li><a href="sign-up">注册</a></li>
+                <li><a href="/sign-in">登录</a></li>
+                <li><a href="/sign-up">注册</a></li>
             </ul>
             <ul th:if="${identityType} != 0">
-                <li><a href="profile">账户信息</a></li>
-                <li><a href="api/sign-out">退出账户</a></li>
+                <li><a href="/profile">账户信息</a></li>
+                <li><a href="/api/sign-out">退出账户</a></li>
             </ul>
         </li>
         <li class="pushy-submenu" th:if="${identityType} != 0">
             <a class="submenu-link" href="#">我的购物 <i class="fa fa-angle-down"></i></a>
             <ul>
-                <li><a href="cart">购物车</a></li>
-                <li><a href="order">我的订单</a></li>
+                <li><a href="/cart">购物车</a></li>
+                <li><a href="/order">我的订单</a></li>
             </ul>
         </li>
         <li class="pushy-submenu" th:if="${identityType} == 2">
             <a class="submenu-link" href="#">后台管理 <i class="fa fa-angle-down"></i></a>
             <ul>
-                <li><a href="book-manage">商品管理</a></li>
-                <li><a href="sales-manage">销售榜单</a></li>
-                <li><a href="bulletin-manage">公告管理</a></li>
-                <li><a href="order-manage">订单管理</a></li>
+                <li><a href="/manage/books">商品管理</a></li>
+                <li><a href="/manage/sales">销售榜单</a></li>
+                <li><a href="/manage/bulletins">公告管理</a></li>
+                <li><a href="/manage/orders">订单管理</a></li>
             </ul>
         </li>
         <li class="pushy-submenu">
             <a class="submenu-link" href="#">关于我们 <i class="fa fa-angle-down"></i></a>
             <ul>
-                <li><a href="about">关于我</a></li>
-                <li><a href="coming-soon">敬请期待</a></li>
+                <li><a href="/about">关于我</a></li>
+                <li><a href="/coming-soon">敬请期待</a></li>
             </ul>
         </li>
     </ul>
@@ -71,7 +71,7 @@
 <div id="master-wrapper">
     <div class="preloader">
         <div class="preloader-img">
-            <span class="loading-animation animate-flicker"><img alt="loading" src="images/layout/loading.gif"/></span>
+            <span class="loading-animation animate-flicker"><img alt="loading" src="/images/layout/loading.gif"/></span>
         </div>
     </div>
     <div class="nav-wrapper smoothie">
@@ -80,9 +80,9 @@
                 <div class="row">
                     <div class="col-sm-3 col-xs-6">
                         <a class="logo-light smoothie" href="/"><img alt="Image" class="logo img-responsive"
-                                                                     src="images/logo/logo-light.png"/></a>
+                                                                     src="/images/logo/logo-light.png"/></a>
                         <a class="logo-dark smoothie" href="/"><img alt="Image" class="logo img-responsive"
-                                                                    src="images/logo/logo.png"/></a>
+                                                                    src="/images/logo/logo.png"/></a>
                     </div>
                     <button class="navbar-toggle collapsed" data-toggle="collapse" type="button">
                             <span aria-label="toggle menu" class="tcon tcon-menu--minus menu-btn">
@@ -148,7 +148,7 @@
             <div class="row mb90" th:if="${isShowBulletin} != true">
                 <div class="col-md-12 col-sm-12">
                     <div class="text-widget widget">
-                        <img alt="Image" class="center-block" src="images/logo/logo-light.png"
+                        <img alt="Image" class="center-block" src="/images/logo/logo-light.png"
                              style="max-height: 50%; max-width: 50%;"/>
                     </div>
                 </div>
@@ -158,7 +158,7 @@
                     <a href="https://github.com/kyx1999"><i class="fa fa-github"></i></a>
                     <a href="https://www.linkedin.com/in/%E8%83%A4%E9%91%AB-%E5%8C%A1-045508194/"><i
                             class="fa fa-linkedin"></i></a>
-                    <a href="images/qrcode/mmqrcode1591262389841.png"><i class="fa fa-weixin"></i></a>
+                    <a href="/images/qrcode/mmqrcode1591262389841.png"><i class="fa fa-weixin"></i></a>
                     <a href="https://weibo.com/u/5982277994"><i class="fa fa-weibo"></i></a>
                 </div>
                 <div class="col-md-6 text-right">

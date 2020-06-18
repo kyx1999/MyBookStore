@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" th:replace="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>商品管理</title>
+</head>
+<body>
+<div th:fragment="content">
+    <section class="white-wrapper special-max-width allow-overflow">
+        <div class="section-inner drag-me-up nopaddingbottom">
+            <div class="container">
+                <div class="row mb60 text-center">
+                    <div class="col-sm-6 text-left match-height">
+                        <h3 class="section-title">商品管理，</h3>
+                        <p class="section-sub-title">管理本站正在出售的图书。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <!--/*@thymesVar id="ordersCount" type="java.lang.Integer"*/-->
+                            <p id="booksCount" style="display: none;" th:text="${booksCount}"></p>
+                            <!--/*@thymesVar id="ordersTables" type="java.lang.String"*/-->
+                            <div id="booksTables" class="col-xs-12" th:utext="${booksTables}">
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <th>暂无商品</th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table>
+                                    <tbody id="t1">
+                                    <tr>
+                                        <th>书名：xxx1</th>
+                                        <th>作者：xxx1</th>
+                                        <th>出版社：xxx1</th>
+                                        <th>出版日期：xxx1</th>
+                                    </tr>
+                                    <tr>
+                                        <th>分类：xxx1</th>
+                                        <th>价格：xxx1</th>
+                                        <th>库存：xxx1</th>
+                                        <th>销量：xxx1</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2" rowspan="2"><img src="/images/books/1.jpg" height="300"
+                                                                         width="300"/></th>
+                                        <th colspan="2">简介：</th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">简介内容</td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2"></th>
+                                        <th>
+                                            <button class="btn btn-primary" onclick="changeBook(1)">修改商品</button>
+                                        </th>
+                                        <th>
+                                            <button class="btn btn-danger" onclick="deleteBook(1)">删除商品</button>
+                                        </th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table>
+                                    <tbody id="t2">
+                                    <tr>
+                                        <th><input class="form-control" name="bname2" placeholder="书名*" type="text"/>
+                                        </th>
+                                        <th><input class="form-control" name="author2" placeholder="作者*" type="text"/>
+                                        </th>
+                                        <th><input class="form-control" name="press2" placeholder="出版社*" type="text"/>
+                                        </th>
+                                        <th>出版日期：<input class="form-control" name="date2" type="date"/></th>
+                                    </tr>
+                                    <tr>
+                                        <th><input class="form-control" name="category2" placeholder="分类*" type="text"/>
+                                        </th>
+                                        <th><input class="form-control" min="0" name="price2" placeholder="价格*"
+                                                   type="number"/></th>
+                                        <th><input class="form-control" min="0" name="amount2" placeholder="库存*"
+                                                   step="1" type="number"/></th>
+                                        <th>销量：xxx</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2">
+                                            上传图片：
+                                            <input accept="image/jpeg" name="picture2" style="display: none;"
+                                                   type="file"/>
+                                            <form action="/api/upload" class="main-contact-form"
+                                                  enctype="multipart/form-data" method="post" target="action">
+                                                <input accept="image/jpeg" class="form-control" name="file"
+                                                       type="file"/>
+                                                <br>
+                                                <p id="p2">尚未上传</p>
+                                                <button class="btn btn-primary" type="submit">上传</button>
+                                            </form>
+                                            <iframe name="action" style="display: none;"></iframe>
+                                        </th>
+                                        <td colspan="2"><textarea class="form-control" name="descn2"
+                                                                  placeholder="简介*"></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="2"></th>
+                                        <th>
+                                            <button class="btn btn-primary" onclick="saveChange(2)">保存商品</button>
+                                        </th>
+                                        <th>
+                                            <button class="btn btn-danger" onclick="deleteBook(2)">删除商品</button>
+                                        </th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <!--                                <table>-->
+                                <!--                                    <tbody>-->
+                                <!--                                    <tr>-->
+                                <!--                                        <th><input class="form-control" name="bnameNew" placeholder="书名*" type="text"/></th>-->
+                                <!--                                        <th><input class="form-control" name="authorNew" placeholder="作者*" type="text"/></th>-->
+                                <!--                                        <th><input class="form-control" name="pressNew" placeholder="出版社*" type="text"/></th>-->
+                                <!--                                        <th>出版日期：<input class="form-control" name="dateNew" type="date"/></th>-->
+                                <!--                                    </tr>-->
+                                <!--                                    <tr>-->
+                                <!--                                        <th><input class="form-control" name="categoryNew" placeholder="分类*" type="text"/></th>-->
+                                <!--                                        <th><input class="form-control" min="0" name="priceNew" placeholder="价格*" type="number"/></th>-->
+                                <!--                                        <th><input class="form-control" min="0" name="amountNew" placeholder="库存*" step="1" type="number"/></th>-->
+                                <!--                                        <th id="sNew">销量：0</th>-->
+                                <!--                                    </tr>-->
+                                <!--                                    <tr>-->
+                                <!--                                        <th colspan="2">上传图片：<input accept="image/jpeg" class="form-control" name="pictureNew" type="file"/></th>-->
+                                <!--                                        <td colspan="2"><textarea class="form-control" name="descnNew" placeholder="简介*"></textarea></td>-->
+                                <!--                                    </tr>-->
+                                <!--                                    <tr>-->
+                                <!--                                        <th colspan="3"></th>-->
+                                <!--                                        <th>-->
+                                <!--                                            <button class="btn btn-primary" onclick="addBook()">添加商品</button>-->
+                                <!--                                        </th>-->
+                                <!--                                    </tr>-->
+                                <!--                                    </tbody>-->
+                                <!--                                </table>-->
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row text-center">
+                            <button class="btn btn-primary" onclick="lastPage()">
+                                &nbsp;&nbsp;&nbsp;上一页&nbsp;&nbsp;&nbsp;
+                            </button>
+                            &nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-primary" onclick="nextPage()">
+                                &nbsp;&nbsp;&nbsp;下一页&nbsp;&nbsp;&nbsp;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <br>
+    <script type="text/javascript">
+        let page = 1;
+
+        function refreshCount() {
+            let xmlhttp;
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    document.getElementById("booksCount").innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("GET", "/api/books-count", true);
+            xmlhttp.send();
+        }
+
+        function jumpToPage(index) {
+            let xmlhttp;
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    document.getElementById("booksTables").innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("GET", "/api/books?page=" + index, true);
+            xmlhttp.send();
+        }
+
+        function lastPage() {
+            refreshCount();
+            if (page > 1) {
+                jumpToPage(--page);
+            }
+        }
+
+        function nextPage() {
+            refreshCount();
+            if (document.getElementById("booksCount").innerText / 10 > page) {
+                jumpToPage(++page);
+            }
+        }
+
+        function refreshUpload(bid, filename) {
+            $("input[name='picture" + bid + "']").val(filename);
+            $("#p" + bid).html("上传成功");
+        }
+
+        function addBook() {
+            const bname = $("input[name='bnameNew']").val().trim();
+            const author = $("input[name='authorNew']").val().trim();
+            const press = $("input[name='pressNew']").val().trim();
+            const date = $("input[name='dateNew']").val().trim();
+            const category = $("input[name='categoryNew']").val().trim();
+            const descn = $("textarea[name='descnNew']").val().trim();
+            const price = $("input[name='priceNew']").val().trim();
+            const amount = $("input[name='amountNew']").val().trim();
+            const picture = $("input[name='pictureNew']").val().trim();
+            if (picture.length !== 0) {
+                if (bname.length !== 0 && author.length !== 0 && press.length !== 0 && date.length !== 0 && category.length !== 0 && descn.length !== 0 && price.length !== 0 && amount.length !== 0) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "/api/add-book",
+                        data: {
+                            bname: bname,
+                            author: author,
+                            press: press,
+                            date: date,
+                            category: category,
+                            descn: descn,
+                            price: price,
+                            amount: amount,
+                            picture: picture
+                        },
+                        success: function () {
+                            refreshCount();
+                            jumpToPage(page);
+                        },
+                        error: function () {
+                            alert('添加失败，请重试。');
+                            location.href = "/manage/books";
+                        }
+                    });
+                } else {
+                    alert("添加失败，必要信息为空。");
+                }
+            } else {
+                alert("添加失败，未上传图片。");
+            }
+        }
+
+        function changeBook(bid) {
+            const t = $("#t" + bid);
+            const trlist = t.find("tr");
+            const list0 = trlist.eq(0).find("th");
+            const list1 = trlist.eq(1).find("th");
+            const bname = list0.eq(0).html().split("：")[1];
+            const author = list0.eq(1).html().split("：")[1];
+            const press = list0.eq(2).html().split("：")[1];
+            const date = list0.eq(3).html().split("：")[1];
+            const category = list1.eq(0).html().split("：")[1];
+            const price = list1.eq(1).html().split("：")[1];
+            const amount = list1.eq(2).html().split("：")[1];
+            const descn = trlist.eq(3).find("td").eq(0).html();
+
+            t.html("=<tr class=\"odd-row\">" +
+                "<th class=\"first\"><input class=\"form-control\" name=\"bname" + bid + "\" placeholder=\"书名*\" type=\"text\" value=\"" + bname + "\"/></th>" +
+                "<th><input class=\"form-control\" name=\"author" + bid + "\" placeholder=\"作者*\" type=\"text\" value=\"" + author + "\"/></th>" +
+                "<th><input class=\"form-control\" name=\"press" + bid + "\" placeholder=\"出版社*\" type=\"text\" value=\"" + press + "\"/></th>" +
+                "<th class=\"last\">出版日期：<input class=\"form-control\" name=\"date" + bid + "\" type=\"date\" value=\"" + date + "\"/></th>" +
+                "</tr>" +
+                "<tr>" +
+                "<th class=\"first\"><input class=\"form-control\" name=\"category" + bid + "\" placeholder=\"分类*\" type=\"text\" value=\"" + category + "\"/></th>" +
+                "<th><input class=\"form-control\" min=\"0\" name=\"price" + bid + "\" placeholder=\"价格*\" type=\"number\" value=\"" + price + "\"/></th>" +
+                "<th><input class=\"form-control\" min=\"0\" name=\"amount" + bid + "\" placeholder=\"库存*\" step=\"1\" type=\"number\" value=\"" + amount + "\"/></th>" +
+                "<th id=\"s" + bid + "\" class=\"last\">" + $("#s" + bid).html() + "</th>" +
+                "</tr>" +
+                "<tr class=\"odd-row\">" +
+                "<th class=\"first\" colspan=\"2\">" +
+                "上传图片：" +
+                "<input name=\"picture" + bid + "\" style=\"display: none;\" type=\"text\"/>" +
+                "<form action=\"/api/upload\" class=\"main-contact-form\" enctype=\"multipart/form-data\" method=\"post\" target=\"" + bid + "\">" +
+                "<input accept=\"image/jpeg\" class=\"form-control\" name=\"file\" type=\"file\"/>" +
+                "<br>" +
+                "<p id=\"p" + bid + "\">尚未上传</p>" +
+                "<button class=\"btn btn-primary\" type=\"submit\">上传</button>" +
+                "</form>" +
+                "<iframe name=\"" + bid + "\" style=\"display: none;\"></iframe>" +
+                "</th>" +
+                "<td class=\"last\" colspan=\"2\"><textarea class=\"form-control\" name=\"descn" + bid + "\" placeholder=\"简介*\">" + descn + "</textarea></td>" +
+                "</tr>" +
+                "<tr>" +
+                "<th class=\"first\" colspan=\"2\"></th>" +
+                "<th>" +
+                "<button class=\"btn btn-primary\" onclick=\"saveChange(" + bid + ")\">保存商品</button>" +
+                "</th>" +
+                "<th class=\"last\">" +
+                "<button class=\"btn btn-danger\" onclick=\"deleteBook(" + bid + ")\">删除商品</button>" +
+                "</th>" +
+                "</tr>");
+        }
+
+        function saveChange(bid) {
+            const bname = $("input[name='bname" + bid + "']").val().trim();
+            const author = $("input[name='author" + bid + "']").val().trim();
+            const press = $("input[name='press" + bid + "']").val().trim();
+            const date = $("input[name='date" + bid + "']").val().trim();
+            const category = $("input[name='category" + bid + "']").val().trim();
+            const descn = $("textarea[name='descn" + bid + "']").val().trim();
+            const price = $("input[name='price" + bid + "']").val().trim();
+            const amount = $("input[name='amount" + bid + "']").val().trim();
+            const picture = $("input[name='picture" + bid + "']").val().trim();
+            $.ajax({
+                type: 'POST',
+                url: "/api/change-book",
+                data: {
+                    bid: bid,
+                    bname: bname,
+                    author: author,
+                    press: press,
+                    date: date,
+                    category: category,
+                    descn: descn,
+                    price: price,
+                    amount: amount,
+                    picture: picture
+                },
+                success: function () {
+                    $("#t" + bid).html("<tr class=\"odd-row\">\n" +
+                        "<th class=\"first\">书名：" + bname + "</th>\n" +
+                        "<th>作者：" + author + "</th>\n" +
+                        "<th>出版社：" + press + "</th>\n" +
+                        "<th class=\"last\">出版日期：" + date + "</th>\n" +
+                        "</tr>\n" +
+                        "<tr>\n" +
+                        "<th class=\"first\">分类：" + category + "</th>\n" +
+                        "<th>价格：" + parseFloat(price).toFixed(2) + "</th>\n" +
+                        "<th>库存：" + amount + "</th>\n" +
+                        "<th id=\"s" + bid + "\" class=\"last\">" + $("#s" + bid).html() + "</th>\n" +
+                        "</tr>\n" +
+                        "<tr class=\"odd-row\">\n" +
+                        "<th colspan=\"2\" rowspan=\"2\" class=\"first\"><img src=\"/images/books/" + bid + ".jpg\" height=\"300\" width=\"300\"/></th>\n" +
+                        "<th colspan=\"2\" class=\"last\">简介：</th>\n" +
+                        "</tr>\n" +
+                        "<tr>\n" +
+                        "<td colspan=\"2\" class=\"first last\">" + descn + "</td>\n" +
+                        "</tr>\n" +
+                        "<tr class=\"odd-row\">\n" +
+                        "<th colspan=\"2\" class=\"first\"></th>\n" +
+                        "<th>\n" +
+                        "<button class=\"btn btn-primary\" onclick=\"changeBook(" + bid + ")\">修改商品</button>\n" +
+                        "</th>\n" +
+                        "<th class=\"last\">\n" +
+                        "<button class=\"btn btn-danger\" onclick=\"deleteBook(" + bid + ")\">删除商品</button>\n" +
+                        "</th>\n" +
+                        "</tr>");
+                },
+                error: function () {
+                    alert('修改失败，请重试。');
+                    location.href = "/manage/books";
+                }
+            });
+        }
+
+        function deleteBook(bid) {
+            if (confirm("确定要删除该商品？")) {
+                let xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        refreshCount();
+                        jumpToPage(page);
+                    }
+                }
+                xmlhttp.open("POST", "/api/delete-book", true);
+                xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xmlhttp.send("bid=" + bid);
+            }
+        }
+    </script>
+</div>
+</body>
+</html>

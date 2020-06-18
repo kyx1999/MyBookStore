@@ -22,7 +22,7 @@
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
-        <sqlMapGenerator targetPackage="com.kyx1999.mybookstore.xml" targetProject="src/main/resources">
+        <sqlMapGenerator targetPackage="xml" targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.kyx1999.mybookstore.dao"

@@ -28,6 +28,15 @@ public class OrderService {
     @Autowired
     OrderItemMapper orderItemMapper;
 
+    public void deleteOrder(Integer oid) {
+        orderInfoMapper.deleteByPrimaryKey(oid);
+        orderItemMapper.deleteByOrderId(oid);
+    }
+
+    public int updateByPrimaryKeySelective(OrderInfo record) {
+        return orderInfoMapper.updateByPrimaryKeySelective(record);
+    }
+
     public OrderInfo[] getOrderInfosByUserId(Integer uid) {
         return orderInfoMapper.selectByUserId(uid);
     }
@@ -57,7 +66,8 @@ public class OrderService {
 
         for (Book book : books) {
             bookMapper.updateByPrimaryKeySelective(book);
-            if (bookMapper.selectByPrimaryKey(book.getBid()).getAmount() < 0) {
+            Book newBook = bookMapper.selectByPrimaryKey(book.getBid());
+            if (!book.getAmount().equals(newBook.getAmount()) || newBook.getAmount() < 0) {
                 throw new IllegalArgumentException("库存不足。");
             }
         }
@@ -84,5 +94,13 @@ public class OrderService {
         }
 
         return true;
+    }
+
+    public Integer getOrdersCount() {
+        return orderInfoMapper.getOrdersCount();
+    }
+
+    public OrderInfo[] getOrderInfosByPage(Integer page) {
+        return orderInfoMapper.getOrderInfosFromX((page - 1) * 10);
     }
 }

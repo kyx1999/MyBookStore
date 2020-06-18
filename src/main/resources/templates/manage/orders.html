@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" th:replace="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>订单管理</title>
+</head>
+<body>
+<div th:fragment="content">
+    <section class="white-wrapper special-max-width allow-overflow">
+        <div class="section-inner drag-me-up nopaddingbottom">
+            <div class="container">
+                <div class="row mb60 text-center">
+                    <div class="col-sm-6 text-left match-height">
+                        <h3 class="section-title">订单管理，</h3>
+                        <p class="section-sub-title">管理本站的订单。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <!--/*@thymesVar id="ordersCount" type="java.lang.Integer"*/-->
+                            <p id="ordersCount" style="display: none;" th:text="${ordersCount}"></p>
+                            <!--/*@thymesVar id="ordersTables" type="java.lang.String"*/-->
+                            <div id="ordersTables" class="col-xs-12" th:utext="${ordersTables}">
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <th>暂无订单</th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row text-center">
+                            <button class="btn btn-primary" onclick="lastPage()">
+                                &nbsp;&nbsp;&nbsp;上一页&nbsp;&nbsp;&nbsp;
+                            </button>
+                            &nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-primary" onclick="nextPage()">
+                                &nbsp;&nbsp;&nbsp;下一页&nbsp;&nbsp;&nbsp;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <br>
+    <script type="text/javascript">
+        let page = 1;
+
+        function refreshCount() {
+            let xmlhttp;
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    document.getElementById("ordersCount").innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("GET", "/api/orders-count", true);
+            xmlhttp.send();
+        }
+
+        function jumpToPage(index) {
+            let xmlhttp;
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    document.getElementById("ordersTables").innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("GET", "/api/orders?page=" + index, true);
+            xmlhttp.send();
+        }
+
+        function lastPage() {
+            refreshCount();
+            if (page > 1) {
+                jumpToPage(--page);
+            }
+        }
+
+        function nextPage() {
+            refreshCount();
+            if (document.getElementById("ordersCount").innerText / 10 > page) {
+                jumpToPage(++page);
+            }
+        }
+
+        function finishOrder(oid) {
+            if (confirm("确定该订单已完成交易？")) {
+                let xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        jumpToPage(page);
+                    }
+                }
+                xmlhttp.open("POST", "/api/finish-order", true);
+                xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xmlhttp.send("oid=" + oid);
+            }
+        }
+
+        function deleteOrder(oid) {
+            if (confirm("确定要删除该订单？")) {
+                let xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        page = 1;
+                        jumpToPage(page);
+                    }
+                }
+                xmlhttp.open("POST", "/api/delete-order", true);
+                xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xmlhttp.send("oid=" + oid);
+            }
+        }
+    </script>
+</div>
+</body>
+</html>

@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@RequestMapping("/error")
 public class ErrorController {
 
     @Autowired
@@ -19,7 +21,7 @@ public class ErrorController {
     @Autowired
     private BulletinService bulletinService;
 
-    @GetMapping("/error/404")
+    @GetMapping("/404")
     public String error404(Model model, HttpServletRequest request) {
         Tools.setLayout(userService, bulletinService, model, request, true);
 

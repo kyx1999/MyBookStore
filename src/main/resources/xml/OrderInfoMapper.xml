@@ -89,4 +89,18 @@
             `uid` = '1'
         ORDER BY `time` DESC
     </select>
+    <select id="getOrdersCount" resultType="java.lang.Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            `order_info`
+    </select>
+    <select id="getOrderInfosFromX" resultType="com.kyx1999.mybookstore.model.OrderInfo">
+        SELECT
+            *
+        FROM
+            `order_info`
+        ORDER BY `time` DESC
+        LIMIT #{index,jdbcType=INTEGER} , 10
+    </select>
 </mapper>

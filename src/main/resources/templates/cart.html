@@ -89,13 +89,15 @@
                     document.getElementById("cartContent").innerHTML = xmlhttp.responseText;
                 }
             }
-            xmlhttp.open("GET", "/api/delete-cart-item?bid=" + document.getElementById("bid" + index).innerText, true);
-            xmlhttp.send();
+            xmlhttp.open("POST", "/api/delete-cart-item", true);
+            xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xmlhttp.send("bid=" + document.getElementById("bid" + index).innerText);
         }
 
         function submitOrder() {
             if (confirm("确定要结账吗？")) {
                 $.ajax({
+                    type: 'POST',
                     url: "/api/submit-order",
                     success: function () {
                         alert('订单提交成功。');

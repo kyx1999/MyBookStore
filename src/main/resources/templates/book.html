@@ -39,7 +39,7 @@
                                                 <a class="smoothie" href="#">
                                                     <img alt="Image" class="img-responsive smoothie" src=""
                                                          th:if="${book} != null"
-                                                         th:src="'images/books/' + ${book.getBid()} + '.jpg'"></a>
+                                                         th:src="'/images/books/' + ${book.getBid()} + '.jpg'"></a>
                                             </div>
                                         </div>
                                     </div>
@@ -60,7 +60,7 @@
                                                 <p id="bid" style="display: none;" th:text="${book.getBid()}"></p>
                                                 <br>
                                                 <p>数量：</p>
-                                                <form action="api/add2cart" class="main-contact-form col-md-12"
+                                                <form action="/api/add2cart" class="main-contact-form col-md-12"
                                                       method="post" target="action">
                                                     <div class="form-group col-md-6">
                                                         <input name="bid" type="number" required style="display: none;"
@@ -84,7 +84,7 @@
                             <div class="mt60 mb60 single-section-title">
                                 <h3 th:text="${commentCount} + '条评价'"></h3>
                             </div>
-                            <p id="comment-count" style="display: none;" th:text="${commentCount}"></p>
+                            <p id="commentCount" style="display: none;" th:text="${commentCount}"></p>
                             <div th:if="${commentCount} != 0">
                                 <!--/*@thymesVar id="comments" type="java.lang.String"*/-->
                                 <div id="comments" th:utext="${comments}"></div>
@@ -97,7 +97,7 @@
                                         <h3>评价该图书</h3>
                                     </div>
                                     <div id="message"></div>
-                                    <form action="api/submit-comment" class="comment-form" method="post" target="action"
+                                    <form action="/api/submit-comment" class="comment-form" method="post" target="action"
                                           th:if="${book} != null">
                                         <input name="bid" type="number" required style="display: none;"
                                                th:value="${book.getBid()}"/>
@@ -115,34 +115,34 @@
                             <div class="widget-content">
                                 <div class="gallery-list">
                                     <!--/*@thymesVar id="top1" type="com.kyx1999.mybookstore.model.Book"*/-->
-                                    <a class="thumb" th:if="${top1} != null" th:href="'book?bid=' + ${top1.getBid()}">
+                                    <a class="thumb" th:if="${top1} != null" th:href="'/book?bid=' + ${top1.getBid()}">
                                         <img alt="" class="img-responsive" src=""
-                                             th:src="'images/books/' + ${top1.getBid()} + '.jpg'">
+                                             th:src="'/images/books/' + ${top1.getBid()} + '.jpg'">
                                     </a>
                                     <!--/*@thymesVar id="top2" type="com.kyx1999.mybookstore.model.Book"*/-->
-                                    <a class="thumb" th:if="${top2} != null" th:href="'book?bid=' + ${top2.getBid()}">
+                                    <a class="thumb" th:if="${top2} != null" th:href="'/book?bid=' + ${top2.getBid()}">
                                         <img alt="" class="img-responsive" src=""
-                                             th:src="'images/books/' + ${top2.getBid()} + '.jpg'">
+                                             th:src="'/images/books/' + ${top2.getBid()} + '.jpg'">
                                     </a>
                                     <!--/*@thymesVar id="top3" type="com.kyx1999.mybookstore.model.Book"*/-->
-                                    <a class="thumb" th:if="${top3} != null" th:href="'book?bid=' + ${top3.getBid()}">
+                                    <a class="thumb" th:if="${top3} != null" th:href="'/book?bid=' + ${top3.getBid()}">
                                         <img alt="" class="img-responsive" src=""
-                                             th:src="'images/books/' + ${top3.getBid()} + '.jpg'">
+                                             th:src="'/images/books/' + ${top3.getBid()} + '.jpg'">
                                     </a>
                                     <!--/*@thymesVar id="top4" type="com.kyx1999.mybookstore.model.Book"*/-->
-                                    <a class="thumb" th:if="${top4} != null" th:href="'book?bid=' + ${top4.getBid()}">
+                                    <a class="thumb" th:if="${top4} != null" th:href="'/book?bid=' + ${top4.getBid()}">
                                         <img alt="" class="img-responsive" src=""
-                                             th:src="'images/books/' + ${top4.getBid()} + '.jpg'">
+                                             th:src="'/images/books/' + ${top4.getBid()} + '.jpg'">
                                     </a>
                                     <!--/*@thymesVar id="top5" type="com.kyx1999.mybookstore.model.Book"*/-->
-                                    <a class="thumb" th:if="${top5} != null" th:href="'book?bid=' + ${top5.getBid()}">
+                                    <a class="thumb" th:if="${top5} != null" th:href="'/book?bid=' + ${top5.getBid()}">
                                         <img alt="" class="img-responsive" src=""
-                                             th:src="'images/books/' + ${top5.getBid()} + '.jpg'">
+                                             th:src="'/images/books/' + ${top5.getBid()} + '.jpg'">
                                     </a>
                                     <!--/*@thymesVar id="top6" type="com.kyx1999.mybookstore.model.Book"*/-->
-                                    <a class="thumb" th:if="${top6} != null" th:href="'book?bid=' + ${top6.getBid()}">
+                                    <a class="thumb" th:if="${top6} != null" th:href="'/book?bid=' + ${top6.getBid()}">
                                         <img alt="" class="img-responsive" src=""
-                                             th:src="'images/books/' + ${top6.getBid()} + '.jpg'">
+                                             th:src="'/images/books/' + ${top6.getBid()} + '.jpg'">
                                     </a>
                                 </div>
                             </div>
@@ -157,7 +157,7 @@
                                             <ul class="list-unstyled">
                                                 <li th:each="category1 : ${categories1}">
                                                     <i class="fa fa-angle-right"></i><a
-                                                        th:href="'category?selected=' + ${category1}"
+                                                        th:href="'/category?selected=' + ${category1}"
                                                         th:text="${category1}"></a>
                                                 </li>
                                             </ul>
@@ -167,7 +167,7 @@
                                             <ul class="list-unstyled">
                                                 <li th:each="category2 : ${categories2}">
                                                     <i class="fa fa-angle-right"></i><a
-                                                        th:href="'category?selected=' + ${category2}"
+                                                        th:href="'/category?selected=' + ${category2}"
                                                         th:text="${category2}"></a>
                                                 </li>
                                             </ul>
@@ -183,6 +183,22 @@
     </section>
     <script type="text/javascript">
         let page = 1;
+
+        function refreshCount() {
+            let xmlhttp;
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    document.getElementById("commentCount").innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("GET", "/api/comment-count&bid=" + document.getElementById("bid").innerText, true);
+            xmlhttp.send();
+        }
 
         function jumpToPage(index) {
             let xmlhttp;
@@ -201,13 +217,15 @@
         }
 
         function lastPage() {
+            refreshCount();
             if (page > 1) {
                 jumpToPage(--page);
             }
         }
 
         function nextPage() {
-            if (document.getElementById("comment-count").innerText / 5 > page) {
+            refreshCount();
+            if (document.getElementById("commentCount").innerText / 5 > page) {
                 jumpToPage(++page);
             }
         }

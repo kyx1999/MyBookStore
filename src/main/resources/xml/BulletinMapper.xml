@@ -2,38 +2,98 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kyx1999.mybookstore.dao.BulletinMapper">
     <resultMap id="BaseResultMap" type="com.kyx1999.mybookstore.model.Bulletin">
+        <id column="bltid" property="bltid" jdbcType="INTEGER"/>
         <result column="content" property="content" jdbcType="VARCHAR"/>
         <result column="time" property="time" jdbcType="TIMESTAMP"/>
+        <result column="valid" property="valid" jdbcType="BIT"/>
     </resultMap>
+    <sql id="Base_Column_List">
+        bltid, content, time, valid
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from bulletin
+        where bltid = #{bltid,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from bulletin
+        where bltid = #{bltid,jdbcType=INTEGER}
+    </delete>
     <insert id="insert" parameterType="com.kyx1999.mybookstore.model.Bulletin">
-        insert into bulletin (content, time)
-        values (#{content,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP})
+        insert into bulletin (bltid, content, time,
+            valid)
+        values (#{bltid,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP},
+            #{valid,jdbcType=BIT})
     </insert>
     <insert id="insertSelective" parameterType="com.kyx1999.mybookstore.model.Bulletin">
         insert into bulletin
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bltid != null">
+                bltid,
+            </if>
             <if test="content != null">
                 content,
             </if>
             <if test="time != null">
                 time,
             </if>
+            <if test="valid != null">
+                valid,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bltid != null">
+                #{bltid,jdbcType=INTEGER},
+            </if>
             <if test="content != null">
                 #{content,jdbcType=VARCHAR},
             </if>
             <if test="time != null">
                 #{time,jdbcType=TIMESTAMP},
             </if>
+            <if test="valid != null">
+                #{valid,jdbcType=BIT},
+            </if>
         </trim>
     </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.kyx1999.mybookstore.model.Bulletin">
+        update bulletin
+        <set>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="time != null">
+                time = #{time,jdbcType=TIMESTAMP},
+            </if>
+            <if test="valid != null">
+                valid = #{valid,jdbcType=BIT},
+            </if>
+        </set>
+        where bltid = #{bltid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.kyx1999.mybookstore.model.Bulletin">
+        update bulletin
+        set content = #{content,jdbcType=VARCHAR},
+            time = #{time,jdbcType=TIMESTAMP},
+            valid = #{valid,jdbcType=BIT}
+        where bltid = #{bltid,jdbcType=INTEGER}
+    </update>
     <select id="getTop3Bulletins" resultType="com.kyx1999.mybookstore.model.Bulletin">
         SELECT
             *
         FROM
             `bulletin`
-        ORDER BY `bulletin`.`time` DESC
+        WHERE
+            `valid` = TRUE
+        ORDER BY `time` DESC
         LIMIT 0 , 3
+    </select>
+    <select id="getAllBulletins" resultType="com.kyx1999.mybookstore.model.Bulletin">
+        SELECT
+            *
+        FROM
+            `bulletin`
+        ORDER BY `time` DESC
     </select>
 </mapper>

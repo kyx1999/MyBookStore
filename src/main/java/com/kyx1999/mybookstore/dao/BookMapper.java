@@ -28,4 +28,8 @@ public interface BookMapper {
     Book[] getAllBooks();
 
     Book[] getSearchBooks(String keyword);
+
+    Integer getBooksCount();
+
+    Book[] getBooksFromX(Integer index);
 }

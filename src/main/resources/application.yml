@@ -1,7 +1,12 @@
 server:
   port: 8080
 
+
 spring:
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
   datasource:
     name: mybookstore
     url: jdbc:mysql://localhost:3306/mybookstore?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8

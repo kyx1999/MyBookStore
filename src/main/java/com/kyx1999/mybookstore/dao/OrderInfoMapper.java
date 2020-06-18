@@ -20,4 +20,8 @@ public interface OrderInfoMapper {
     int updateByPrimaryKeySelective(OrderInfo record);
 
     int updateByPrimaryKey(OrderInfo record);
+
+    Integer getOrdersCount();
+
+    OrderInfo[] getOrderInfosFromX(Integer index);
 }

@@ -34,7 +34,8 @@
             #{press,jdbcType=VARCHAR}, #{date,jdbcType=DATE}, #{category,jdbcType=CHAR}, #{descn,jdbcType=VARCHAR},
             #{price,jdbcType=REAL}, #{amount,jdbcType=INTEGER}, #{sales,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" parameterType="com.kyx1999.mybookstore.model.Book">
+    <insert id="insertSelective" parameterType="com.kyx1999.mybookstore.model.Book" useGeneratedKeys="true"
+            keyProperty="bid">
         insert into book
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="bid != null">
@@ -212,5 +213,19 @@
         WHERE
             `bname` LIKE CONCAT('%', #{keyword,jdbcType=VARCHAR}, '%')
         ORDER BY `sales` DESC
+    </select>
+    <select id="getBooksCount" resultType="java.lang.Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            `book`
+    </select>
+    <select id="getBooksFromX" resultType="com.kyx1999.mybookstore.model.Book">
+        SELECT
+            *
+        FROM
+            `book`
+        ORDER BY `bname`
+        LIMIT #{index,jdbcType=INTEGER} , 10
     </select>
 </mapper>

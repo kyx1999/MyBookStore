@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" th:replace="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <title>公告管理</title>
+</head>
+<body>
+<div th:fragment="content">
+    <section class="white-wrapper special-max-width allow-overflow">
+        <div class="section-inner drag-me-up nopaddingbottom">
+            <div class="container">
+                <div class="row mb60 text-center">
+                    <div class="col-sm-6 text-left match-height">
+                        <h3 class="section-title">公告管理，</h3>
+                        <p class="section-sub-title">管理本站的公告（最新的三条有效公告将会被显示在首页上）。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <!--/*@thymesVar id="bulletinContent" type="java.lang.String"*/-->
+                                <table id="bulletinContent" th:utext="${bulletinContent}">
+                                    <tbody>
+                                    <tr>
+                                        <th>暂无公告</th>
+                                    </tr>
+                                    </tbody>
+                                    <!--                                    <table id="bulletinContent">-->
+                                    <!--                                        <tbody>-->
+                                    <!--                                        <tr>-->
+                                    <!--                                            <th>序号</th>-->
+                                    <!--                                            <th>内容</th>-->
+                                    <!--                                            <th>时间</th>-->
+                                    <!--                                            <th>是否有效</th>-->
+                                    <!--                                            <th>操作</th>-->
+                                    <!--                                        </tr>-->
+                                    <!--                                        <tr>-->
+                                    <!--                                            <td>1<p id="bltid" style="display: none;">1</p></td>-->
+                                    <!--                                            <td id="c1">kjsadfhkjasdfh</td>-->
+                                    <!--                                            <td>4564</td>-->
+                                    <!--                                            <td id="s1">是</td>-->
+                                    <!--                                            <td>-->
+                                    <!--                                                <div class="row">-->
+                                    <!--                                                    <button id="b1" class="btn btn-primary" onclick="changeBulletin(1)">-->
+                                    <!--                                                        修改-->
+                                    <!--                                                    </button>-->
+                                    <!--                                                    &nbsp;-->
+                                    <!--                                                    <button class="btn btn-danger" onclick="deleteBulletin(1)">删除-->
+                                    <!--                                                    </button>-->
+                                    <!--                                                </div>-->
+                                    <!--                                            </td>-->
+                                    <!--                                        </tr>-->
+                                    <!--                                        <tr>-->
+                                    <!--                                            <td>1</td>-->
+                                    <!--                                            <td id="c1"><input id="i1" class="form-control" name="content" type="text"/></td>-->
+                                    <!--                                            <td>4564</td>-->
+                                    <!--                                            <td id="s1"><select id="slt1" class="form-control" name="valid"><option value="true" selected>是</option><option value="false">否</option></select></td>-->
+                                    <!--                                            <td>-->
+                                    <!--                                                <div class="row">-->
+                                    <!--                                                    <button id="b1" class="btn btn-primary" onclick="changeBulletin(1)">-->
+                                    <!--                                                        添加-->
+                                    <!--                                                    </button>-->
+                                    <!--                                                    &nbsp;-->
+                                    <!--                                                    <button class="btn btn-danger" onclick="deleteBulletin(1)">删除-->
+                                    <!--                                                    </button>-->
+                                    <!--                                                </div>-->
+                                    <!--                                            </td>-->
+                                    <!--                                        </tr>-->
+                                    <!--                                        </tbody>-->
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <br>
+    <script type="text/javascript">
+        function changeBulletin(index) {
+            const c = $("#c" + index);
+            c.html("<input id=\"i" + index + "\" class=\"form-control\" name=\"content\" type=\"text\" value=\"" + c.html() + "\"/>");
+            const s = $("#v" + index);
+            s.html("<select id=\"slt" + index + "\" class=\"form-control\" name=\"valid\"><option value=\"true\"" + (s.html() == "是" ? " selected" : "") + ">是</option><option value=\"false\"" + (s.html() == "是" ? "" : " selected") + ">否</option></select>");
+            const b = $("#b" + index);
+            b.html("保存");
+            b.attr("onclick", "saveChange(" + index + ")");
+        }
+
+        function saveChange(index) {
+            sendChange(index);
+            const b = $("#b" + index);
+            b.html("修改");
+            b.attr("onclick", "changeBulletin(" + index + ")");
+        }
+
+        function sendChange(index) {
+            $.ajax({
+                type: 'POST',
+                url: "/api/change-bulletin",
+                data: {
+                    bltid: $("#bltid" + index).html(),
+                    content: $("#i" + index).val(),
+                    valid: $("#s" + index).val()
+                },
+                success: function () {
+                    const i = $("#i" + index);
+                    const c = $("#c" + index);
+                    c.html(i.val());
+                    const s = $("#v" + index);
+                    const slt = $("#s" + index);
+                    s.html(slt.val() == "true" ? "是" : "否");
+                },
+                error: function () {
+                    alert('修改失败，请重试。');
+                    location.href = "/manage/bulletins";
+                }
+            });
+        }
+
+        function deleteBulletin(index) {
+            let xmlhttp;
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    document.getElementById("bulletinContent").innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("POST", "/api/delete-bulletin", true);
+            xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xmlhttp.send("bltid=" + document.getElementById("bltid" + index).innerText);
+        }
+
+        function addBulletin(index) {
+            const i = $("#i" + index).val().trim();
+            if (i.length !== 0) {
+                let xmlhttp;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        document.getElementById("bulletinContent").innerHTML = xmlhttp.responseText;
+                    }
+                }
+                xmlhttp.open("POST", "/api/add-bulletin", true);
+                xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xmlhttp.send("content=" + i + "&valid=" + $("#s" + index).val());
+            }
+        }
+    </script>
+</div>
+</body>
+</html>

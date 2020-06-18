@@ -4,6 +4,7 @@ import com.kyx1999.mybookstore.dao.BookMapper;
 import com.kyx1999.mybookstore.model.Book;
 import com.kyx1999.mybookstore.model.CartItem;
 import com.kyx1999.mybookstore.model.OrderItem;
+import com.kyx1999.mybookstore.util.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,20 @@ public class BookService {
     @Autowired
     private BookMapper bookMapper;
 
+    public int insertSelective(Book record) {
+        return bookMapper.insertSelective(record);
+    }
+
+    public int deleteByPrimaryKey(Integer bid) {
+        return bookMapper.deleteByPrimaryKey(bid);
+    }
+
     public Book selectByPrimaryKey(Integer bid) {
         return bookMapper.selectByPrimaryKey(bid);
+    }
+
+    public int updateByPrimaryKeySelective(Book record) {
+        return bookMapper.updateByPrimaryKeySelective(record);
     }
 
     public Book[] getTop4SalesBooksThisWeek() {
@@ -77,5 +90,23 @@ public class BookService {
         }
 
         return books;
+    }
+
+    public StringBuilder getSales() {
+        StringBuilder sales = new StringBuilder();
+        sales.append("编号,书名,分类,价格,库存,销量\r\n");
+        Book[] books = bookMapper.getAllBooks();
+        for (Book book : books) {
+            sales.append(book.getBid()).append(",").append(Tools.csvCheck(book.getBname())).append(",").append(Tools.csvCheck(book.getCategory())).append(",").append(book.getPrice()).append(",").append(book.getAmount()).append(",").append(book.getSales()).append("\r\n");
+        }
+        return sales;
+    }
+
+    public Integer getBooksCount() {
+        return bookMapper.getBooksCount();
+    }
+
+    public Book[] getBooksByPage(Integer page) {
+        return bookMapper.getBooksFromX((page-1) * 10);
     }
 }

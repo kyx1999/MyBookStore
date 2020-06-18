@@ -78,4 +78,9 @@
             `oid` = #{oid,jdbcType=INTEGER}
         ORDER BY `bid`
     </select>
+    <update id="deleteByOrderId" parameterType="java.lang.Integer">
+        DELETE FROM `order_item`
+        WHERE
+            `oid` = #{oid,jdbcType=INTEGER}
+    </update>
 </mapper>
