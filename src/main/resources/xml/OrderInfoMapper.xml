@@ -86,7 +86,7 @@
         FROM
             `order_info`
         WHERE
-            `uid` = '1'
+            `uid` = #{uid,jdbcType=INTEGER}
         ORDER BY `time` DESC
     </select>
     <select id="getOrdersCount" resultType="java.lang.Integer">

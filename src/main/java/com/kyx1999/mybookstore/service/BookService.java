@@ -68,7 +68,7 @@ public class BookService {
 
     public Book[] getBooksByCartItems(CartItem[] cartItems) {
         if (cartItems.length == 0) {
-            return null;
+            return new Book[0];
         }
 
         Book[] books = new Book[cartItems.length];
@@ -81,7 +81,7 @@ public class BookService {
 
     public Book[] getBooksByOrderItems(OrderItem[] orderItems) {
         if (orderItems.length == 0) {
-            return null;
+            return new Book[0];
         }
 
         Book[] books = new Book[orderItems.length];
@@ -107,6 +107,6 @@ public class BookService {
     }
 
     public Book[] getBooksByPage(Integer page) {
-        return bookMapper.getBooksFromX((page-1) * 10);
+        return bookMapper.getBooksFromX((page - 1) * 10);
     }
 }

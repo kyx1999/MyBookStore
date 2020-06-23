@@ -175,7 +175,7 @@
                 FROM
                     `order_info`
                 WHERE
-                    `order_info`.`status` = '完成'
+                    `order_info`.`status` = '已完成'
                         AND DATE_SUB(NOW(), INTERVAL 7 DAY) &lt;= `order_info`.`time`)) `A`
             GROUP BY `A`.`bid`) `B`
         WHERE

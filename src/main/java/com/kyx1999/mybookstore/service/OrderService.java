@@ -33,6 +33,10 @@ public class OrderService {
         orderItemMapper.deleteByOrderId(oid);
     }
 
+    public OrderInfo selectByPrimaryKey(Integer oid) {
+        return orderInfoMapper.selectByPrimaryKey(oid);
+    }
+
     public int updateByPrimaryKeySelective(OrderInfo record) {
         return orderInfoMapper.updateByPrimaryKeySelective(record);
     }
@@ -102,5 +106,9 @@ public class OrderService {
 
     public OrderInfo[] getOrderInfosByPage(Integer page) {
         return orderInfoMapper.getOrderInfosFromX((page - 1) * 10);
+    }
+
+    public OrderItem[] selectByOrderId(Integer oid) {
+        return orderItemMapper.selectByOrderId(oid);
     }
 }

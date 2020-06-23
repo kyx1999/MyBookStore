@@ -97,7 +97,8 @@
                                         <h3>评价该图书</h3>
                                     </div>
                                     <div id="message"></div>
-                                    <form action="/api/submit-comment" class="comment-form" method="post" target="action"
+                                    <form action="/api/submit-comment" class="comment-form" method="post"
+                                          target="action"
                                           th:if="${book} != null">
                                         <input name="bid" type="number" required style="display: none;"
                                                th:value="${book.getBid()}"/>
@@ -196,7 +197,7 @@
                     document.getElementById("commentCount").innerHTML = xmlhttp.responseText;
                 }
             }
-            xmlhttp.open("GET", "/api/comment-count&bid=" + document.getElementById("bid").innerText, true);
+            xmlhttp.open("GET", "/api/comment-count?bid=" + document.getElementById("bid").innerText, true);
             xmlhttp.send();
         }
 

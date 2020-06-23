@@ -64,18 +64,10 @@ public class HomeController {
         }
 
         StringBuilder stringBuilder = new StringBuilder();
-        if (selected.equals("全部")) {
-            stringBuilder.append(Tools.generateCategory(true, "全部"));
-        } else {
-            stringBuilder.append(Tools.generateCategory(false, "全部"));
-        }
+        stringBuilder.append(Tools.generateCategory(selected.equals("全部"), "全部"));
         if (categories != null) {
             for (String category : categories) {
-                if (selected.equals(category)) {
-                    stringBuilder.append(Tools.generateCategory(true, category));
-                } else {
-                    stringBuilder.append(Tools.generateCategory(false, category));
-                }
+                stringBuilder.append(Tools.generateCategory(selected.equals(category), category));
             }
             model.addAttribute("categories", stringBuilder.toString());
         }
@@ -115,7 +107,7 @@ public class HomeController {
         }
 
         model.addAttribute("commentCount", commentService.getCommentCountByBid(bid));
-        model.addAttribute("comments", Tools.getCommentsHTMLInPageX(bid, 1, userService, commentService));
+        model.addAttribute("comments", Tools.generateCommentsInPageX(bid, 1, userService, commentService));
 
         Book[] books = bookService.getTopXSalesBooks(6);
         if (books != null) {
@@ -162,6 +154,8 @@ public class HomeController {
         User user = Tools.getUserByRequest(userService, request);
         if (user != null) {
             model.addAttribute("user", user);
+        } else {
+            return "/error/404";
         }
 
         return "/profile";
@@ -174,6 +168,8 @@ public class HomeController {
         User user = Tools.getUserByRequest(userService, request);
         if (user != null) {
             model.addAttribute("cartContent", Tools.generateCartContentByUserId(user.getUid(), bookService, cartItemService));
+        } else {
+            return "/error/404";
         }
 
         return "/cart";
@@ -207,6 +203,8 @@ public class HomeController {
             } else {
                 model.addAttribute("orderTables", "<table><tbody><tr class=\"odd-row\"><th class=\"first last\">暂无订单</th></tr></tbody></table>");
             }
+        } else {
+            return "/error/404";
         }
 
         return "/order";

@@ -74,7 +74,7 @@ public class ApiController {
 
         User user = Tools.getUserByRequest(userService, request);
         if (user == null) {
-            return "<script>alert('加入购物车失败。');</script>";
+            return "<script>alert('请先登录。'); parent.location.href=\"/sign-in\";</script>";
         }
 
         cartItemService.changeCart(user.getUid(), bid, qty, true);
@@ -86,7 +86,7 @@ public class ApiController {
     @GetMapping("/comment-count")
     public String commentCount(@RequestParam("bid") Integer bid) {
         if (bid == null) {
-            return null;
+            return "0";
         }
 
         return commentService.getCommentCountByBid(bid).toString();
@@ -96,10 +96,10 @@ public class ApiController {
     @GetMapping("/comment")
     public String comment(@RequestParam("bid") Integer bid, @RequestParam("page") Integer page) {
         if (bid == null || page == null) {
-            return null;
+            return "";
         }
 
-        return Tools.getCommentsHTMLInPageX(bid, page > 0 ? page : 1, userService, commentService);
+        return Tools.generateCommentsInPageX(bid, page > 0 ? page : 1, userService, commentService);
     }
 
     @ResponseBody
@@ -111,7 +111,7 @@ public class ApiController {
 
         User user = Tools.getUserByRequest(userService, request);
         if (user == null) {
-            return "<script>alert('评论失败。');</script>";
+            return "<script>alert('请先登录。'); parent.location.href=\"/sign-in\";</script>";
         }
 
         commentService.submitComment(user.getUid(), bid, content);
@@ -301,8 +301,8 @@ public class ApiController {
 
     @PostMapping("/submit-order")
     public void submitOrder(HttpServletRequest request, HttpServletResponse response) {
-        User user = Tools.getUserByRequest(userService, request);
         try {
+            User user = Tools.getUserByRequest(userService, request);
             if (user == null) {
                 response.sendError(400);
                 return;
@@ -321,7 +321,7 @@ public class ApiController {
     public String booksCount(HttpServletRequest request) {
         User user = Tools.getUserByRequest(userService, request);
         if (user == null || !user.getIdentity().equals("管理员")) {
-            return "";
+            return "0";
         }
 
         return bookService.getBooksCount().toString();
@@ -337,7 +337,7 @@ public class ApiController {
 
         Book[] books = bookService.getBooksByPage(page > 0 ? page : 1);
         StringBuilder booksTables = new StringBuilder();
-        if (books != null || books.length != 0) {
+        if (books != null && books.length != 0) {
             booksTables.append(Tools.generateBooksTables(books));
         }
         booksTables.append("<table>" +
@@ -397,7 +397,7 @@ public class ApiController {
             }
             file.transferTo(newFile);
 
-            return "<script>alert('上传成功。'); parent.refreshUpload(window.name, \"" + filename + "\");</script>";
+            return "<script>alert('上传成功！'); parent.refreshUpload(window.name, \"" + filename + "\");</script>";
 
         } catch (IOException | NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -448,12 +448,12 @@ public class ApiController {
     public void changeBook(@RequestParam("bid") Integer bid, @RequestParam("bname") String bname, @RequestParam("author") String author, @RequestParam("press") String press, @RequestParam("date") String dateString, @RequestParam("category") String category, @RequestParam("descn") String descn, @RequestParam("price") Float price, @RequestParam("amount") Integer amount, @RequestParam("picture") String picture, HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             User user = Tools.getUserByRequest(userService, request);
-            if (user == null || !user.getIdentity().equals("管理员")) {
+            if (user == null || !user.getIdentity().equals("管理员") || bid == null || bookService.selectByPrimaryKey(bid) == null) {
                 response.sendError(400);
                 return;
             }
 
-            if (bid == null || bname == null || bname.equals("") || author == null || author.equals("") || press == null || press.equals("") || dateString == null || dateString.equals("") || category == null || category.equals("") || descn == null || descn.equals("") || price == null || price < 0 || amount == null || amount < 0) {
+            if (bname == null || bname.equals("") || author == null || author.equals("") || press == null || press.equals("") || dateString == null || dateString.equals("") || category == null || category.equals("") || descn == null || descn.equals("") || price == null || price < 0 || amount == null || amount < 0) {
                 response.sendError(400);
                 return;
             }
@@ -515,26 +515,26 @@ public class ApiController {
 
     @GetMapping("/download")
     public void download(HttpServletRequest request, HttpServletResponse response) {
-        User user = Tools.getUserByRequest(userService, request);
-        if (user == null || !user.getIdentity().equals("管理员")) {
-            return;
-        }
-
-        response.setHeader("Content-Type", "application/octet-stream");
-        response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment;filename=Sales.csv");
-
-        StringBuilder sbd = bookService.getSales();
-
-        byte[] buffer = new byte[1024];
         BufferedInputStream bis = null;
+        OutputStream os = null;
         try {
+            User user = Tools.getUserByRequest(userService, request);
+            if (user == null || !user.getIdentity().equals("管理员")) {
+                response.sendError(400);
+                return;
+            }
+
+            response.setHeader("Content-Disposition", "attachment;filename=Sales.csv");
+
+            StringBuilder sbd = bookService.getSales();
+
+            int i;
+            byte[] buffer = new byte[1024];
             bis = new BufferedInputStream(new ByteArrayInputStream(sbd.toString().getBytes("GBK")));
-            OutputStream os = response.getOutputStream();
-            int i = bis.read(buffer);
-            while (i != -1) {
+            os = response.getOutputStream();
+            while ((i = bis.read(buffer)) != -1) {
                 os.write(buffer, 0, i);
-                i = bis.read(buffer);
+                os.flush();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -542,6 +542,13 @@ public class ApiController {
             if (bis != null) {
                 try {
                     bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (os != null) {
+                try {
+                    os.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -604,7 +611,7 @@ public class ApiController {
     public String ordersCount(HttpServletRequest request) {
         User user = Tools.getUserByRequest(userService, request);
         if (user == null || !user.getIdentity().equals("管理员")) {
-            return "";
+            return "0";
         }
 
         return orderService.getOrdersCount().toString();
@@ -630,7 +637,7 @@ public class ApiController {
     public void finishOrder(@RequestParam("oid") Integer oid, HttpServletRequest request, HttpServletResponse response) {
         try {
             User user = Tools.getUserByRequest(userService, request);
-            if (user == null || !user.getIdentity().equals("管理员") || oid == null) {
+            if (user == null || !user.getIdentity().equals("管理员") || oid == null || orderService.selectByPrimaryKey(oid) == null) {
                 response.sendError(400);
                 return;
             }
@@ -639,6 +646,13 @@ public class ApiController {
             orderInfo.setOid(oid);
             orderInfo.setStatus("已完成");
             orderService.updateByPrimaryKeySelective(orderInfo);
+
+            OrderItem[] orderItems = orderService.selectByOrderId(orderInfo.getOid());
+            for (OrderItem orderItem : orderItems) {
+                Book book = bookService.selectByPrimaryKey(orderItem.getBid());
+                book.setSales(book.getSales() + orderItem.getQty());
+                bookService.updateByPrimaryKeySelective(book);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

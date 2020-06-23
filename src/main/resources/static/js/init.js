@@ -198,6 +198,7 @@ jQuery(document).ready(function () {
                         columnWidth: masonry_container.width() / 3
                     }
                 });
+                $("#selected").click();
             });
 
             masonry_portfolio_selectors.on('click', function (e) {

@@ -48,7 +48,7 @@ public class Tools {
         }
     }
 
-    public static String getCommentsHTMLInPageX(Integer bid, Integer page, UserService userService, CommentService commentService) {
+    public static String generateCommentsInPageX(Integer bid, Integer page, UserService userService, CommentService commentService) {
         StringBuilder result = new StringBuilder();
         Comment[] comments = commentService.selectByBookIdAndPage(bid, page);
         if (comments != null) {
@@ -78,23 +78,23 @@ public class Tools {
     }
 
     public static String generateBook(Book book, Boolean isSearch) {
-        return "<div class=\"" + (isSearch ? "col-md-3" : "col-sm-4 masonry-portfolio-item") + " mb30 " + book.getCategory() + "\">\n" +
-                "<div class=\"hover-effect smoothie\">\n" +
-                "<a class=\"smoothie\" href=\"#\">\n" +
-                "<img alt=\"Image\" class=\"img-responsive smoothie\" height=\"500\" width=\"500\" src=\"/images/books/" + book.getBid() + ".jpg\">\n" +
-                "</a>\n" +
-                "<div class=\"hover-overlay smoothie text-center\">\n" +
-                "<div class=\"vertical-align-top\">\n" +
-                "<h4>" + book.getBname() + "</h4>\n" +
-                "<span class=\"hover-overlay-cat\"作者：>" + book.getAuthor() + "</span>\n" +
-                "</div>\n" +
-                "</div>\n" +
-                "<div class=\"hover-caption dark-overlay smoothie text-center\">\n" +
-                "<div class=\"vertical-align-bottom\">\n" +
-                "<a href=\"/book?bid=" + book.getBid() + "\" class=\"btn btn-primary btn-green\">了解更多</a>\n" +
-                "</div>\n" +
-                "</div>\n" +
-                "</div>\n" +
+        return "<div class=\"" + (isSearch ? "col-md-3" : "col-sm-4 masonry-portfolio-item") + " mb30 " + book.getCategory() + "\">" +
+                "<div class=\"hover-effect smoothie\">" +
+                "<a class=\"smoothie\" href=\"#\">" +
+                "<img alt=\"Image\" class=\"img-responsive smoothie\" height=\"500\" width=\"500\" src=\"/images/books/" + book.getBid() + ".jpg\">" +
+                "</a>" +
+                "<div class=\"hover-overlay smoothie text-center\">" +
+                "<div class=\"vertical-align-top\">" +
+                "<h4>" + book.getBname() + "</h4>" +
+                "<span class=\"hover-overlay-cat\"作者：>" + book.getAuthor() + "</span>" +
+                "</div>" +
+                "</div>" +
+                "<div class=\"hover-caption dark-overlay smoothie text-center\">" +
+                "<div class=\"vertical-align-bottom\">" +
+                "<a href=\"/book?bid=" + book.getBid() + "\" class=\"btn btn-primary btn-green\">了解更多</a>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
                 "</div>";
     }
 
@@ -184,86 +184,86 @@ public class Tools {
 
     private static String generateComment(String uname, Date time, String content) {
         DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return "<div class=\"media\">\n" +
-                "<div class=\"media-body\">\n" +
-                "<div class=\"well\">\n" +
-                "<div class=\"media-heading\">\n" +
-                "<span class=\"heading-font\">" + uname + "</span>&nbsp;\n" +
-                "<small>" + simpleDateFormat.format(time) + "</small>\n" +
-                "</div>\n" +
-                "<p>" + content + "</p>\n" +
-                "</div>\n" +
-                "</div>\n" +
+        return "<div class=\"media\">" +
+                "<div class=\"media-body\">" +
+                "<div class=\"well\">" +
+                "<div class=\"media-heading\">" +
+                "<span class=\"heading-font\">" + uname + "</span>&nbsp;" +
+                "<small>" + simpleDateFormat.format(time) + "</small>" +
+                "</div>" +
+                "<p>" + content + "</p>" +
+                "</div>" +
+                "</div>" +
                 "</div>";
     }
 
     private static String generateCartItem(Integer index, Integer bid, String bname, Float price, Integer qty, Float subtotal) {
         DecimalFormat decimalFormat = new DecimalFormat(".00");
-        return "<tr>\n" +
-                "<td>" + index + "<p id=\"bid" + index + "\" style=\"display: none;\">" + bid + "</p></td>\n" +
-                "<td>" + bname + "</td>\n" +
-                "<td id=\"p" + index + "\">" + decimalFormat.format(price) + "</td>\n" +
-                "<td id=\"q" + index + "\">" + qty + "</td>\n" +
-                "<td id=\"s" + index + "\">" + decimalFormat.format(subtotal) + "</td>\n" +
-                "<td>\n" +
+        return "<tr>" +
+                "<td>" + index + "<p id=\"bid" + index + "\" style=\"display: none;\">" + bid + "</p></td>" +
+                "<td>" + bname + "</td>" +
+                "<td id=\"p" + index + "\">" + decimalFormat.format(price) + "</td>" +
+                "<td id=\"q" + index + "\">" + qty + "</td>" +
+                "<td id=\"s" + index + "\">" + decimalFormat.format(subtotal) + "</td>" +
+                "<td>" +
                 "<div class=\"row\">" +
-                "<button id=\"b" + index + "\" class=\"btn btn-primary\" onclick=\"changeCartItem(" + index + ")\">修改数量</button>\n" +
-                "&nbsp;\n" +
-                "<button class=\"btn btn-danger\" onclick=\"deleteCartItem(" + index + ")\">删除</button>\n" +
+                "<button id=\"b" + index + "\" class=\"btn btn-primary\" onclick=\"changeCartItem(" + index + ")\">修改数量</button>" +
+                "&nbsp;" +
+                "<button class=\"btn btn-danger\" onclick=\"deleteCartItem(" + index + ")\">删除</button>" +
                 "</div>" +
-                "</td>\n" +
+                "</td>" +
                 "</tr>";
     }
 
     private static String generateBooksTable(Book book) {
         DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         DecimalFormat decimalFormat = new DecimalFormat(".00");
-        return "<table>\n" +
-                "<tbody id=\"t" + book.getBid() + "\">\n" +
-                "<tr class=\"odd-row\">\n" +
-                "<th class=\"first\">书名：" + book.getBname() + "</th>\n" +
-                "<th>作者：" + book.getAuthor() + "</th>\n" +
-                "<th>出版社：" + book.getPress() + "</th>\n" +
-                "<th class=\"last\">出版日期：" + simpleDateFormat.format(book.getDate()) + "</th>\n" +
-                "</tr>\n" +
-                "<tr>\n" +
-                "<th class=\"first\">分类：" + book.getCategory() + "</th>\n" +
-                "<th>价格：" + decimalFormat.format(book.getPrice()) + "</th>\n" +
-                "<th>库存：" + book.getAmount() + "</th>\n" +
-                "<th id=\"s" + book.getBid() + "\" class=\"last\">销量：" + book.getSales() + "</th>\n" +
-                "</tr>\n" +
-                "<tr class=\"odd-row\">\n" +
-                "<th class=\"first\" colspan=\"2\" rowspan=\"2\"><img src=\"/images/books/" + book.getBid() + ".jpg\" height=\"300\" width=\"300\"/></th>\n" +
-                "<th class=\"last\" colspan=\"2\">简介：</th>\n" +
-                "</tr>\n" +
-                "<tr>\n" +
-                "<td class=\"first last\" colspan=\"2\">" + book.getDescn() + "</td>\n" +
-                "</tr>\n" +
-                "<tr class=\"odd-row\">\n" +
-                "<th class=\"first\" colspan=\"2\"></th>\n" +
-                "<th>\n" +
-                "<button class=\"btn btn-primary\" onclick=\"changeBook(" + book.getBid() + ")\">修改商品</button>\n" +
-                "</th>\n" +
-                "<th class=\"last\">\n" +
-                "<button class=\"btn btn-danger\" onclick=\"deleteBook(" + book.getBid() + ")\">删除商品</button>\n" +
-                "</th>\n" +
-                "</tr>\n" +
-                "</tbody>\n" +
+        return "<table>" +
+                "<tbody id=\"t" + book.getBid() + "\">" +
+                "<tr class=\"odd-row\">" +
+                "<th class=\"first\">书名：" + book.getBname() + "</th>" +
+                "<th>作者：" + book.getAuthor() + "</th>" +
+                "<th>出版社：" + book.getPress() + "</th>" +
+                "<th class=\"last\">出版日期：" + simpleDateFormat.format(book.getDate()) + "</th>" +
+                "</tr>" +
+                "<tr>" +
+                "<th class=\"first\">分类：" + book.getCategory() + "</th>" +
+                "<th>价格：" + decimalFormat.format(book.getPrice()) + "</th>" +
+                "<th>库存：" + book.getAmount() + "</th>" +
+                "<th id=\"s" + book.getBid() + "\" class=\"last\">销量：" + book.getSales() + "</th>" +
+                "</tr>" +
+                "<tr class=\"odd-row\">" +
+                "<th class=\"first\" colspan=\"2\" rowspan=\"2\"><img alt=\"Image\" src=\"/images/books/" + book.getBid() + ".jpg\" height=\"300\" width=\"300\"/></th>" +
+                "<th class=\"last\" colspan=\"2\">简介：</th>" +
+                "</tr>" +
+                "<tr>" +
+                "<td class=\"first last\" colspan=\"2\">" + book.getDescn() + "</td>" +
+                "</tr>" +
+                "<tr class=\"odd-row\">" +
+                "<th class=\"first\" colspan=\"2\"></th>" +
+                "<th>" +
+                "<button class=\"btn btn-primary\" onclick=\"changeBook(" + book.getBid() + ")\">修改商品</button>" +
+                "</th>" +
+                "<th class=\"last\">" +
+                "<button class=\"btn btn-danger\" onclick=\"deleteBook(" + book.getBid() + ")\">删除商品</button>" +
+                "</th>" +
+                "</tr>" +
+                "</tbody>" +
                 "</table>";
     }
 
     private static String generateBulletin(Integer index, Bulletin bulletin) {
         DateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return "<tr>\n" +
-                "<td>" + index + (bulletin != null ? "<p id=\"bltid" + index + "\" style=\"display: none;\">" + bulletin.getBltid() + "</p>" : "") + "</td>\n" +
-                "<td id=\"c" + index + "\">" + (bulletin != null ? bulletin.getContent() : "<input id=\"i" + index + "\" class=\"form-control\" name=\"content\" type=\"text\"/>") + "</td>\n" +
-                "<td>" + simpleDateFormat.format(bulletin != null ? bulletin.getTime() : new Date()) + "</td>\n" +
-                "<td id=\"v" + index + "\">" + (bulletin != null ? (bulletin.getValid() ? "是" : "否") : "<select id=\"s" + index + "\" class=\"form-control\" name=\"valid\"><option value=\"true\" selected>是</option><option value=\"false\">否</option></select>") + "</td>\n" +
-                "<td>\n" +
-                "<div class=\"row\">\n" +
+        return "<tr>" +
+                "<td>" + index + (bulletin != null ? "<p id=\"bltid" + index + "\" style=\"display: none;\">" + bulletin.getBltid() + "</p>" : "") + "</td>" +
+                "<td id=\"c" + index + "\">" + (bulletin != null ? bulletin.getContent() : "<input id=\"i" + index + "\" class=\"form-control\" name=\"content\" type=\"text\"/>") + "</td>" +
+                "<td>" + simpleDateFormat.format(bulletin != null ? bulletin.getTime() : new Date()) + "</td>" +
+                "<td id=\"v" + index + "\">" + (bulletin != null ? (bulletin.getValid() ? "是" : "否") : "<select id=\"slt" + index + "\" class=\"form-control\" name=\"valid\"><option value=\"true\" selected>是</option><option value=\"false\">否</option></select>") + "</td>" +
+                "<td>" +
+                "<div class=\"row\">" +
                 (bulletin != null ? "<button id=\"b" + index + "\" class=\"btn btn-primary\" onclick=\"changeBulletin(" + index + ")\">修改</button>&nbsp;<button class=\"btn btn-danger\" onclick=\"deleteBulletin(" + index + ")\">删除</button>\n" : "<button id=\"b" + index + "\" class=\"btn btn-primary\" onclick=\"addBulletin(" + index + ")\">添加公告</button>") +
-                "</div>\n" +
-                "</td>\n" +
+                "</div>" +
+                "</td>" +
                 "</tr>";
     }
 }
